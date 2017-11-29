@@ -55,6 +55,14 @@ SE3Tracker::SE3Tracker(int w, int h, Eigen::Matrix3f K)
 	cy = K(1,2);
 
 	settings = DenseDepthTrackerSettings();
+    
+     /*
+     构造函数,初始化了相机,Tracking得配置参数,并给需要矫正的数据分配了内存,同时分配了深度,深度得方差,以及计算权重的内存,最后设置计数器为0,默认为没有diverged
+
+    DenseDepthTrackerSettings定义了一些Tracking相关的设定,比如最大迭代次数,认为收敛的阈值(百分比形式,有些数据认为98%收敛,有些是99%),还有huber距离所需参数等,
+
+     */
+     
 	//settings.maxItsPerLvl[0] = 2;
 
 	KInv = K.inverse();
@@ -177,6 +185,7 @@ SE3 SE3Tracker::trackFrameOnPermaref(
 	trackingWasGood = true;
 
 	callOptimized(calcResidualAndBuffers, (reference->permaRef_posData, reference->permaRef_colorAndVarData, 0, reference->permaRefNumPts, frame, referenceToFrame, QUICK_KF_CHECK_LVL, false));
+    
 	if(buf_warped_size < MIN_GOODPERALL_PIXEL_ABSMIN * (width>>QUICK_KF_CHECK_LVL)*(height>>QUICK_KF_CHECK_LVL))
 	{
 		diverged = true;
@@ -212,6 +221,7 @@ SE3 SE3Tracker::trackFrameOnPermaref(
 
 			// re-evaluate residual
 			callOptimized(calcResidualAndBuffers, (reference->permaRef_posData, reference->permaRef_colorAndVarData, 0, reference->permaRefNumPts, frame, new_referenceToFrame, QUICK_KF_CHECK_LVL, false));
+
 			if(buf_warped_size < MIN_GOODPERALL_PIXEL_ABSMIN * (width>>QUICK_KF_CHECK_LVL)*(height>>QUICK_KF_CHECK_LVL))
 			{
 				diverged = true;
@@ -294,13 +304,15 @@ SE3 SE3Tracker::trackFrame(
 		saveAllTrackingStagesInternal = true;
 	}
 	
-	if (plotTrackingIterationInfo)
+	if(plotTrackingIterationInfo)
 	{
 		const float* frameImage = frame->image();
 		for (int row = 0; row < height; ++ row)
 			for (int col = 0; col < width; ++ col)
 				setPixelInCvMat(&debugImageSecondFrame,getGrayCvPixel(frameImage[col+row*width]), col, row, 1);
 	}
+	//以上部分是参数的一些配置和初始化,其中最后部分的setPixelInCvMat其实是为了可视化使用的,它将传入帧中的图片灰度化后设置到debugImageSecondFrame中,用于查看当前帧的数据图像数据
+	
 
 	// ============ track frame ============
 	Sophus::SE3f referenceToFrame = frameToReference_initialEstimate.inverse().cast<float>();
@@ -311,39 +323,63 @@ SE3 SE3Tracker::trackFrame(
 	int numCalcWarpUpdateCalls[PYRAMID_LEVELS];
 
 	float last_residual = 0;
-
+//首先将初始估计记录下来(记录了参考帧到当前帧的刚度变换),然后定义一个6自由度矩阵的误差判别计算对象ls,定义cell数量以及最终的残差
 
 	for(int lvl=SE3TRACKING_MAX_LEVEL-1;lvl >= SE3TRACKING_MIN_LEVEL;lvl--)
-	{
+    //SE3TRACKING_MIN_LEVEL 1         ,SE3TRACKING_MAX_LEVEL 5
+	{   //从Tracking的最高等级开始,向下计算
 		numCalcResidualCalls[lvl] = 0;
 		numCalcWarpUpdateCalls[lvl] = 0;
 
-		reference->makePointCloud(lvl);
+		reference->makePointCloud(lvl);//创建点云数据
 
-		callOptimized(calcResidualAndBuffers, (reference->posData[lvl], reference->colorAndVarData[lvl], SE3TRACKING_MIN_LEVEL == lvl ? reference->pointPosInXYGrid[lvl] : 0, reference->numData[lvl], frame, referenceToFrame, lvl, (plotTracking && lvl == SE3TRACKING_MIN_LEVEL)));
+		callOptimized(calcResidualAndBuffers, 
+                      (reference->posData[lvl], 
+                       reference->colorAndVarData[lvl], 
+                       SE3TRACKING_MIN_LEVEL == lvl ? reference->pointPosInXYGrid[lvl] : 0, 
+                       reference->numData[lvl], 
+                       frame, 
+                       referenceToFrame, 
+                       lvl, 
+                       (plotTracking && lvl == SE3TRACKING_MIN_LEVEL)));
+        
+/*      计算光度误差，并根据每个像素的误差大小评判这个像素good or bad,并进行统计
+        八个参数,
+        参考帧的点云数据
+        参考帧的灰度和方差值
+        现在的是不是最小层，是就传入参考帧的索引值,不是就传入０
+        参考帧的点云数量
+        现在帧结构
+        初始的参考帧到现在帧的位姿估计
+        金字塔等级
+        可视化调试相关参数
+        
+    */
+        //判断这个warp的好坏(如果改变的太多,已经超过了这一层图片的1%),那么我们认为差别太大,Tracking失败,返回一个空的SE3
+        //MIN_GOODPERALL_PIXEL_ABSMIN = 0.01
 		if(buf_warped_size < MIN_GOODPERALL_PIXEL_ABSMIN * (width>>lvl)*(height>>lvl))
 		{
 			diverged = true;
 			trackingWasGood = false;
 			return SE3();
 		}
-
+//首先判断是否使用简单的仿射变换,如果使用了,那么把通过calcResidualAndBuffers函数更新的affineEstimation_a_lastIt以及affineEstimation_b_lastIt,赋值给仿射变换系数
 		if(useAffineLightningEstimation)
 		{
 			affineEstimation_a = affineEstimation_a_lastIt;
 			affineEstimation_b = affineEstimation_b_lastIt;
 		}
-		float lastErr = callOptimized(calcWeightsAndResidual,(referenceToFrame));
+		float lastErr = callOptimized(calcWeightsAndResidual,(referenceToFrame));//计算了图片有效点的残差平均值
+//????????此函数有待理解,计算了权重 
+		numCalcResidualCalls[lvl]++;//统计调用了多少次残差计算
 
-		numCalcResidualCalls[lvl]++;
 
+		float LM_lambda = settings.lambdaInitial[lvl];//0
 
-		float LM_lambda = settings.lambdaInitial[lvl];
-
-		for(int iteration=0; iteration < settings.maxItsPerLvl[lvl]; iteration++)
+		for(int iteration=0; iteration < settings.maxItsPerLvl[lvl]; iteration++)//最大迭代次数 maxIterations[6] = {5, 20, 50, 100, 100, 100};
 		{
 
-			callOptimized(calculateWarpUpdate,(ls));
+			callOptimized(calculateWarpUpdate,(ls));//
 
 			numCalcWarpUpdateCalls[lvl]++;
 
@@ -356,8 +392,8 @@ SE3 SE3Tracker::trackFrame(
 				Vector6 b = -ls.b;
 				Matrix6x6 A = ls.A;
 				for(int i=0;i<6;i++) A(i,i) *= 1+LM_lambda;
-				Vector6 inc = A.ldlt().solve(b);
-				incTry++;
+				Vector6 inc = A.ldlt().solve(b);//解方程
+				incTry++;//尝试次数增量
 
 				// apply increment. pretty sure this way round is correct, but hard to test.
 				Sophus::SE3f new_referenceToFrame = Sophus::SE3f::exp((inc)) * referenceToFrame;
@@ -365,7 +401,17 @@ SE3 SE3Tracker::trackFrame(
 
 
 				// re-evaluate residual
-				callOptimized(calcResidualAndBuffers, (reference->posData[lvl], reference->colorAndVarData[lvl], SE3TRACKING_MIN_LEVEL == lvl ? reference->pointPosInXYGrid[lvl] : 0, reference->numData[lvl], frame, new_referenceToFrame, lvl, (plotTracking && lvl == SE3TRACKING_MIN_LEVEL)));
+				callOptimized(calcResidualAndBuffers, 
+                              (reference->posData[lvl], 
+                               reference->colorAndVarData[lvl], 
+                               SE3TRACKING_MIN_LEVEL == lvl ? reference->pointPosInXYGrid[lvl] : 0, 
+                               reference->numData[lvl], 
+                               frame, 
+                               new_referenceToFrame, 
+                               lvl, 
+                               (plotTracking && lvl == SE3TRACKING_MIN_LEVEL)));
+                
+                
 				if(buf_warped_size < MIN_GOODPERALL_PIXEL_ABSMIN* (width>>lvl)*(height>>lvl))
 				{
 					diverged = true;
@@ -379,7 +425,7 @@ SE3 SE3Tracker::trackFrame(
 
 				// accept inc?
 				if(error < lastErr)
-				{
+				{ 
 					// accept inc
 					referenceToFrame = new_referenceToFrame;
 					if(useAffineLightningEstimation)
@@ -417,8 +463,7 @@ SE3 SE3Tracker::trackFrame(
 					if(LM_lambda <= 0.2)
 						LM_lambda = 0;
 					else
-						LM_lambda *= settings.lambdaSuccessFac;
-
+						LM_lambda *= settings.lambdaSuccessFac;// lambdaSuccessFac = 0.5f;
 					break;
 				}
 				else
@@ -429,7 +474,7 @@ SE3 SE3Tracker::trackFrame(
 								lvl,iteration, sqrt(inc.dot(inc)), LM_lambda, lastErr, error);
 					}
 
-					if(!(inc.dot(inc) > settings.stepSizeMin[lvl]))
+					if(!(inc.dot(inc) > settings.stepSizeMin[lvl]))//对两个向量执行点乘运算，就是对这两个向量对应位一一相乘之后求和的操作，点乘的结果是一个标量 
 					{
 						if(enablePrintDebugInfo && printTrackingIterationInfo)
 						{
@@ -443,7 +488,7 @@ SE3 SE3Tracker::trackFrame(
 					if(LM_lambda == 0)
 						LM_lambda = 0.2;
 					else
-						LM_lambda *= std::pow(settings.lambdaFailFac, incTry);
+						LM_lambda *= std::pow(settings.lambdaFailFac, incTry);//lambdaFailFac = 2.0f;
 				}
 			}
 		}
@@ -467,7 +512,8 @@ SE3 SE3Tracker::trackFrame(
 
 		printf("\n");
 	}
-
+    
+    //迭代计算之后是保存状态
 	saveAllTrackingStagesInternal = false;
 
 	lastResidual = last_residual;
@@ -479,9 +525,13 @@ SE3 SE3Tracker::trackFrame(
 	if(trackingWasGood)
 		reference->keyframe->numFramesTrackedOnThis++;
 
-	frame->initialTrackedResidual = lastResidual / pointUsage;
-	frame->pose->thisToParent_raw = sim3FromSE3(toSophus(referenceToFrame.inverse()),1);
-	frame->pose->trackingParent = reference->keyframe->pose;
+    //然后更新传入帧的属性,记录误差,到参考帧的变换,以及参考帧的信息,最后返回当前帧到参考帧的变换
+	frame->initialTrackedResidual = lastResidual / pointUsage;//
+	
+	frame->pose->thisToParent_raw = sim3FromSE3(toSophus(referenceToFrame.inverse()),1);//
+	
+    frame->pose->trackingParent = reference->keyframe->pose;//
+    
 	return toSophus(referenceToFrame.inverse());
 }
 
@@ -764,7 +814,7 @@ float SE3Tracker::calcWeightsAndResidual(
 		float rp = *(buf_warped_residual+i); // r_p
 		float gx = *(buf_warped_dx+i);	// \delta_x I
 		float gy = *(buf_warped_dy+i);  // \delta_y I
-		float s = settings.var_weight * *(buf_idepthVar+i);	// \sigma_d^2
+		float s = settings.var_weight * *(buf_idepthVar+i);	//  1*idepthVar   \sigma_d^2
 
 
 		// calc dw/dd (first 2 components):
@@ -779,7 +829,7 @@ float SE3Tracker::calcWeightsAndResidual(
 		float weighted_rp = fabs(rp*sqrtf(w_p));
 
 		float wh = fabs(weighted_rp < (settings.huber_d/2) ? 1 : (settings.huber_d/2) / weighted_rp);
-
+        //huber_d = 3
 		sumRes += wh * w_p * rp*rp;
 
 
@@ -793,7 +843,7 @@ float SE3Tracker::calcWeightsAndResidual(
 void SE3Tracker::calcResidualAndBuffers_debugStart()
 {
 	if(plotTrackingIterationInfo || saveAllTrackingStagesInternal)
-	{
+	{//设置相关调试参数
 		int other = saveAllTrackingStagesInternal ? 255 : 0;
 		fillCvMat(&debugImageResiduals,cv::Vec3b(other,other,255));
 		fillCvMat(&debugImageWeights,cv::Vec3b(other,other,255));
@@ -881,7 +931,7 @@ float SE3Tracker::calcResidualAndBuffersNEON(
 }
 #endif
 
-
+//计算某个点残差值
 float SE3Tracker::calcResidualAndBuffers(
 		const Eigen::Vector3f* refPoint,
 		const Eigen::Vector2f* refColVar,
@@ -898,7 +948,7 @@ float SE3Tracker::calcResidualAndBuffers(
 		debugImageResiduals.setTo(0);
 
 
-	int w = frame->width(level);
+	int w = frame->width(level);//读取相应图像金字塔等级的分辨率
 	int h = frame->height(level);
 	Eigen::Matrix3f KLvl = frame->K(level);
 	float fx_l = KLvl(0,0);
@@ -906,7 +956,7 @@ float SE3Tracker::calcResidualAndBuffers(
 	float cx_l = KLvl(0,2);
 	float cy_l = KLvl(1,2);
 
-	Eigen::Matrix3f rotMat = referenceToFrame.rotationMatrix();
+	Eigen::Matrix3f rotMat = referenceToFrame.rotationMatrix();//参考找到当前帧的旋转平移矩阵
 	Eigen::Vector3f transVec = referenceToFrame.translation();
 	
 	const Eigen::Vector3f* refPoint_max = refPoint + refNum;
@@ -934,37 +984,61 @@ float SE3Tracker::calcResidualAndBuffers(
 	for(;refPoint<refPoint_max; refPoint++, refColVar++, idxBuf++)
 	{
 
-		Eigen::Vector3f Wxp = rotMat * (*refPoint) + transVec;
+		Eigen::Vector3f Wxp = rotMat * (*refPoint) + transVec;// 将三维点旋转平移到 当前帧坐标系中
 		float u_new = (Wxp[0]/Wxp[2])*fx_l + cx_l;
-		float v_new = (Wxp[1]/Wxp[2])*fy_l + cy_l;
+		float v_new = (Wxp[1]/Wxp[2])*fy_l + cy_l;//把原来的参考点投影到新的图像上
 
 		// step 1a: coordinates have to be in image:
 		// (inverse test to exclude NANs)
-		if(!(u_new > 1 && v_new > 1 && u_new < w-2 && v_new < h-2))
+		if(!(u_new > 1 && v_new > 1 && u_new < w-2 && v_new < h-2))// u,v在合理范围内
 		{
 			if(isGoodOutBuffer != 0)
 				isGoodOutBuffer[*idxBuf] = false;
 			continue;
 		}
 
-		Eigen::Vector3f resInterp = getInterpolatedElement43(frame_gradients, u_new, v_new, w);
+		Eigen::Vector3f resInterp = getInterpolatedElement43(frame_gradients, u_new, v_new, w);//然后插值得到亚像素精度级别的深度(注意深度的第三个维度是图像数据)  由梯度算插值??
+//frame_gradients compute 第一个维度存储的是左右两个像素点的梯度,是中心差分,第二个维度储存了上下两个像素点的梯度,也是中心差分,第三个维度存储了当前图像的值,最后一个维度没有存储数据
 
-		float c1 = affineEstimation_a * (*refColVar)[0] + affineEstimation_b;
-		float c2 = resInterp[2];
-		float residual = c1 - c2;
+        //把图像数据做一次仿射操作,再算得亚像素坐标和当前像素坐标的差值
+		float c1 = affineEstimation_a * (*refColVar)[0] + affineEstimation_b;//没插值仿射变换, 光照仿射纠正后结果
+		float c2 = resInterp[2];//插值
+		float residual = c1 - c2;// 光度差
 
 		float weight = fabsf(residual) < 5.0f ? 1 : 5.0f / fabsf(residual);
+/*
+* 通过差值自适应算得weight以及相关值,它认为两个变换之间的像素值有个阈值5.0,小于5.0的时候等于1,如果大于5.0,那么依据比值5.0f / fabsf(residual)减小,也就是说,离得越远,权重越小
+*/
+        
 		sxx += c1*c1*weight;
 		syy += c2*c2*weight;
 		sx += c1*weight;
 		sy += c2*weight;
 		sw += weight;
 
+/*// 一般来说 匹配时光度误差不会太大。
+//他这里评价一个像素匹配好坏的标准: 假设光度误差 不能超过(最大光度误差常量+ 梯度值)，因为梯度越大光度误差变化可能越大所以加上了梯度值。
+
+ 然后判断这个点是好是坏,也是个自适应的阈值,这个阈值为一个最大的差异常数,加上梯度值乘以一个比例系数,
+即,           res^2
+   ________________________________________________
+                            (左梯度^2 + 右梯度^2 )
+    40*40(最大光度误差常量)+  ____________________
+                                      4
+
+,这个和残差比较,如果残差的平方小于它,那么认为这个点的估计比较好,然后再把这个判断赋值给
+isGoodOutBuffer[*idxBuf]
+ */
 		bool isGood = residual*residual / (MAX_DIFF_CONSTANT + MAX_DIFF_GRAD_MULT*(resInterp[0]*resInterp[0] + resInterp[1]*resInterp[1])) < 1;
 
 		if(isGoodOutBuffer != 0)
 			isGoodOutBuffer[*idxBuf] = isGood;
 
+        
+/*
+ 之后记录计算得到的这一帧改变的值,中间的乘法实际上是投影到图像坐标,即相机参数乘以差之后的梯度值,从而得到
+图像的改变值,点的第三个维度是z坐标,倒数正好是逆深度
+ */
 		*(buf_warped_x+idx) = Wxp(0);
 		*(buf_warped_y+idx) = Wxp(1);
 		*(buf_warped_z+idx) = Wxp(2);
@@ -973,7 +1047,7 @@ float SE3Tracker::calcResidualAndBuffers(
 		*(buf_warped_dy+idx) = fy_l * resInterp[1];
 		*(buf_warped_residual+idx) = residual;
 
-		*(buf_d+idx) = 1.0f / (*refPoint)[2];
+		*(buf_d+idx) = 1.0f / (*refPoint)[2];//倒数正好是逆深度
 		*(buf_idepthVar+idx) = (*refColVar)[1];
 		idx++;
 
@@ -1013,6 +1087,7 @@ float SE3Tracker::calcResidualAndBuffers(
 		}
 	}
 
+	// 循环结束之后,记录所有的改变值,以及计算迭代之后得到的相似变换系数,最后返回平均残差
 	buf_warped_size = idx;
 
 	pointUsage = usageCount / (float)refNum;
@@ -1262,7 +1337,7 @@ void SE3Tracker::calculateWarpUpdate(
 //	weightEstimator.estimateDistribution(buf_warped_residual, buf_warped_size);
 //	weightEstimator.calcWeights(buf_warped_residual, buf_warped_weights, buf_warped_size);
 //
-	ls.initialize(width*height);
+	ls.initialize(width*height);//首先现将ls参数初始化成默认值初始化了一个Matrix6x6 A和Vector6 b;元素值都置０
 	for(int i=0;i<buf_warped_size;i++)
 	{
 		float px = *(buf_warped_x+i);
@@ -1275,17 +1350,20 @@ void SE3Tracker::calculateWarpUpdate(
 
 		float z = 1.0f / pz;
 		float z_sqr = 1.0f / (pz*pz);
-		Vector6 v;
+		
+        Vector6 v;
+        
 		v[0] = z*gx + 0;
-		v[1] = 0 +         z*gy;
-		v[2] = (-px * z_sqr) * gx +
-			  (-py * z_sqr) * gy;
-		v[3] = (-px * py * z_sqr) * gx +
-			  (-(1.0 + py * py * z_sqr)) * gy;
-		v[4] = (1.0 + px * px * z_sqr) * gx +
-			  (px * py * z_sqr) * gy;
-		v[5] = (-py * z) * gx +
-			  (px * z) * gy;
+        
+		v[1] = 0 + z*gy;
+        
+		v[2] = (-px * z_sqr) * gx +  (-py * z_sqr) * gy;
+        
+		v[3] = (-px * py * z_sqr) * gx +  (-(1.0 + py * py * z_sqr)) * gy;
+        
+		v[4] = (1.0 + px * px * z_sqr) * gx +   (px * py * z_sqr) * gy;
+        
+		v[5] = (-py * z) * gx +  (px * z) * gy;
 
 		// step 6: integrate into A and b:
 		ls.update(v, r, *(buf_weight_p+i));

@@ -46,13 +46,13 @@ TrackingReference::TrackingReference()
 void TrackingReference::releaseAll()
 {
 	for (int level = 0; level < PYRAMID_LEVELS; ++ level)
-	{
+	{      
 		if(posData[level] != nullptr) delete[] posData[level];
 		if(gradData[level] != nullptr) delete[] gradData[level];
 		if(colorAndVarData[level] != nullptr) delete[] colorAndVarData[level];
 		if(pointPosInXYGrid[level] != nullptr)
 			Eigen::internal::aligned_free((void*)pointPosInXYGrid[level]);
-		numData[level] = 0;
+        numData[level] = 0;
 	}
 	wh_allocated = 0;
 }
@@ -114,6 +114,8 @@ void TrackingReference::makePointCloud(int level)
 	const float* pyrColorSource = keyframe->image(level);
 	const Eigen::Vector4f* pyrGradSource = keyframe->gradients(level);
 
+//由于之前import的时候,可能没有把内存释放了(配置参数一样的情况),所以引入了4个判断,并考虑资源的分配分配好之后,利用这些资源:    
+    
 	if(posData[level] == nullptr) posData[level] = new Eigen::Vector3f[w*h];
 	if(pointPosInXYGrid[level] == nullptr)
 		pointPosInXYGrid[level] = (int*)Eigen::internal::aligned_malloc(w*h*sizeof(int));;
@@ -125,7 +127,7 @@ void TrackingReference::makePointCloud(int level)
 	Eigen::Vector2f* gradDataPT = gradData[level];
 	Eigen::Vector2f* colorAndVarDataPT = colorAndVarData[level];
 
-	for(int x=1; x<w-1; x++)
+	for(int x=1; x<w-1; x++)//一帧图片
 		for(int y=1; y<h-1; y++)
 		{
 			int idx = x + y*w;
@@ -134,6 +136,7 @@ void TrackingReference::makePointCloud(int level)
 
 			*posDataPT = (1.0f / pyrIdepthSource[idx]) * Eigen::Vector3f(fxInvLevel*x+cxInvLevel,fyInvLevel*y+cyInvLevel,1);
 			*gradDataPT = pyrGradSource[idx].head<2>();
+            //梯度数据前两个就是ｘ方向的梯度和ｙ方向的梯度
 			*colorAndVarDataPT = Eigen::Vector2f(pyrColorSource[idx], pyrIdepthVarSource[idx]);
 			*idxPT = idx;
 
@@ -142,6 +145,7 @@ void TrackingReference::makePointCloud(int level)
 			colorAndVarDataPT++;
 			idxPT++;
 		}
+//首先我们需要从关键帧中记录的位置数据和深度数据恢复点云,然后记录像素梯度然后把深度方差和可视化的上色部分记录成一个向量,之后再循环遍历整个过程,将数据全部记录下来,最后计算指针跳了多少位,即有多少个点云被记录了下来
 
 	numData[level] = posDataPT - posData[level];
 }

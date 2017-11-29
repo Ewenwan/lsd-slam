@@ -23,7 +23,10 @@
 #include "util/EigenCoreInclude.h"
 #include <opencv2/core/core.hpp>
 #include "util/settings.h"
-
+/*
+LSGX,这里面有3个类,分别是LSG4,LSG6和LSG7,他们定义了4个参数6
+个参数以及7个参数的最小二乘法
+ */
 
 
 namespace lsd_slam
@@ -50,18 +53,19 @@ public:
   Matrix4x4 A;
   Vector4 b;
 
-  float error;
+  float  error;
   size_t num_constraints;
 
   inline void initialize(const size_t maxnum_constraints)
   {
-    A.setZero();
-    b.setZero();
+    A.setZero();//Matrix4x4 A
+    b.setZero();//Vector4   b
     memset(SSEData,0, sizeof(float)*4*15);
     error = 0;
     this->num_constraints = 0;
   }
-
+//should be jacobian
+//use SSE（Streaming SIMD Extensions，单指令多数据流扩展） for compute speed up
   inline void finishNoDivide()
   {
 #if defined(ENABLE_SSE)

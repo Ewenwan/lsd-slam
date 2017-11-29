@@ -44,6 +44,8 @@ namespace lsd_slam
 
 Sim3Tracker::Sim3Tracker(int w, int h, Eigen::Matrix3f K)
 {
+    
+   
 	width = w;
 	height = h;
 
@@ -78,7 +80,7 @@ Sim3Tracker::Sim3Tracker(int w, int h, Eigen::Matrix3f K)
 	buf_weight_p = (float*)Eigen::internal::aligned_malloc(w*h*sizeof(float));
 	buf_weight_d = (float*)Eigen::internal::aligned_malloc(w*h*sizeof(float));
 
-	buf_weight_Huber = (float*)Eigen::internal::aligned_malloc(w*h*sizeof(float));
+	buf_weight_Huber = (float*)Eigen::internal::aligned_malloc(w*h*sizeof(float));//休伯距离
 	buf_weight_VarP = (float*)Eigen::internal::aligned_malloc(w*h*sizeof(float));
 	buf_weight_VarD = (float*)Eigen::internal::aligned_malloc(w*h*sizeof(float));
 

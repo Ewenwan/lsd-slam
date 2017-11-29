@@ -45,7 +45,7 @@ public:
 	float fx,fy,cx,cy;
 	float fxi,fyi,cxi,cyi;
 
-	DenseDepthTrackerSettings settings;
+	DenseDepthTrackerSettings settings;//定义了一些Tracking相关的设定,比如最大迭代次数,认为收敛的阈值(百分比形式,有些数据认为98%收敛,有些是99%),还有huber距离所需参数等
 
 
 	// debug images
@@ -80,6 +80,7 @@ public:
 
 
 	float pointUsage;
+    // 选择KeyFrame 时保证有足够的概率提供small -baseline . 当一个像素深度值相对前一阵变小时，说明相机靠近这个物体，以后见到的机会会更多
 	float lastGoodCount;
 	float lastMeanRes;
 	float lastBadCount;
