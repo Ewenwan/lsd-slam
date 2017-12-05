@@ -311,6 +311,8 @@ void SlamSystem::constraintSearchThreadLoop()
 		}
 		else
 		{
+            printf("Mother Fuck\n");
+            printf("Mother dck\n");
 			Frame* newKF = newKeyFrames.front();
 			newKeyFrames.pop_front();
 			lock.unlock();

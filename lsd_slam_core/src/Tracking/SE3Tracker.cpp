@@ -379,9 +379,9 @@ SE3 SE3Tracker::trackFrame(
 		for(int iteration=0; iteration < settings.maxItsPerLvl[lvl]; iteration++)//最大迭代次数 maxIterations[6] = {5, 20, 50, 100, 100, 100};
 		{
 
-			callOptimized(calculateWarpUpdate,(ls));//
+			callOptimized(calculateWarpUpdate,(ls));//计算所有点的误差，求出JTJ
 
-			numCalcWarpUpdateCalls[lvl]++;
+			numCalcWarpUpdateCalls[lvl]++;//记录求ＪＴＪ的次数
 
 			iterationNumber = iteration;
 
@@ -393,12 +393,19 @@ SE3 SE3Tracker::trackFrame(
 				Matrix6x6 A = ls.A;
 				for(int i=0;i<6;i++) A(i,i) *= 1+LM_lambda;
 				Vector6 inc = A.ldlt().solve(b);//解方程
+                /*
+                 LDLT分解法
+                 若A为一对称矩阵且其任意一k阶主子阵均不为零，则A有如下惟一的分解形式： A=LDL^T
+                 其中L为一下三角形单位矩阵（即主对角线元素皆为1），D为一对角矩阵（只在主对角线上有元素，其余皆为零），L^T为L的转置矩阵。
+                 便于解方程
+                 */
 				incTry++;//尝试次数增量
 
 				// apply increment. pretty sure this way round is correct, but hard to test.
+				// left扰动模型
 				Sophus::SE3f new_referenceToFrame = Sophus::SE3f::exp((inc)) * referenceToFrame;
 				//Sophus::SE3f new_referenceToFrame = referenceToFrame * Sophus::SE3f::exp((inc));
-
+                //new_referenceToFrame是参考帧到现在帧的空间变换
 
 				// re-evaluate residual
 				callOptimized(calcResidualAndBuffers, 
@@ -412,7 +419,7 @@ SE3 SE3Tracker::trackFrame(
                                (plotTracking && lvl == SE3TRACKING_MIN_LEVEL)));
                 
                 
-				if(buf_warped_size < MIN_GOODPERALL_PIXEL_ABSMIN* (width>>lvl)*(height>>lvl))
+				if(buf_warped_size < MIN_GOODPERALL_PIXEL_ABSMIN* (width>>lvl)*(height>>lvl))//好点太少 MIN_GOODPERALL_PIXEL_ABSMIN = 0.01f
 				{
 					diverged = true;
 					trackingWasGood = false;
@@ -424,10 +431,10 @@ SE3 SE3Tracker::trackFrame(
 
 
 				// accept inc?
-				if(error < lastErr)
+				if(error < lastErr)//F(x) > F(xnew)
 				{ 
 					// accept inc
-					referenceToFrame = new_referenceToFrame;
+					referenceToFrame = new_referenceToFrame;//x = xnew
 					if(useAffineLightningEstimation)
 					{
 						affineEstimation_a = affineEstimation_a_lastIt;
@@ -454,7 +461,7 @@ SE3 SE3Tracker::trackFrame(
 							printf("(%d-%d): FINISHED pyramid level (last residual reduction too small).\n",
 									lvl,iteration);
 						}
-						iteration = settings.maxItsPerLvl[lvl];
+						iteration = settings.maxItsPerLvl[lvl];//迭代次数直接等于本金字塔的最大迭代次数，退出迭代;
 					}
 
 					last_residual = lastErr = error;
@@ -481,7 +488,7 @@ SE3 SE3Tracker::trackFrame(
 							printf("(%d-%d): FINISHED pyramid level (stepsize too small).\n",
 									lvl,iteration);
 						}
-						iteration = settings.maxItsPerLvl[lvl];
+						iteration = settings.maxItsPerLvl[lvl];//迭代次数直接等于本金字塔的最大迭代次数，退出迭代
 						break;
 					}
 
@@ -815,20 +822,20 @@ float SE3Tracker::calcWeightsAndResidual(
 		float gx = *(buf_warped_dx+i);	// \delta_x I
 		float gy = *(buf_warped_dy+i);  // \delta_y I
 		float s = settings.var_weight * *(buf_idepthVar+i);	//  1*idepthVar   \sigma_d^2
-
+        //var_weight = 1.0
 
 		// calc dw/dd (first 2 components):
-		float g0 = (tx * pz - tz * px) / (pz*pz*d);
+		float g0 = (tx * pz - tz * px) / (pz*pz*d);//理论上多了一个ｄ，这是为何?
 		float g1 = (ty * pz - tz * py) / (pz*pz*d);
 
 
 		// calc w_p
 		float drpdd = gx * g0 + gy * g1;	// ommitting the minus
-		float w_p = 1.0f / ((cameraPixelNoise2) + s * drpdd * drpdd);
+		float w_p = 1.0f / ((cameraPixelNoise2) + s * drpdd * drpdd);//cameraPixelNoise2 = 4*4;
 
 		float weighted_rp = fabs(rp*sqrtf(w_p));
 
-		float wh = fabs(weighted_rp < (settings.huber_d/2) ? 1 : (settings.huber_d/2) / weighted_rp);
+		float wh = fabs(weighted_rp < (settings.huber_d/2) ? 1 : (settings.huber_d/2) / weighted_rp);//huber_d = 3
         //huber_d = 3
 		sumRes += wh * w_p * rp*rp;
 
@@ -1338,7 +1345,7 @@ void SE3Tracker::calculateWarpUpdate(
 //	weightEstimator.calcWeights(buf_warped_residual, buf_warped_weights, buf_warped_size);
 //
 	ls.initialize(width*height);//首先现将ls参数初始化成默认值初始化了一个Matrix6x6 A和Vector6 b;元素值都置０
-	for(int i=0;i<buf_warped_size;i++)
+	for(int i=0;i<buf_warped_size;i++) 
 	{
 		float px = *(buf_warped_x+i);
 		float py = *(buf_warped_y+i);
@@ -1353,7 +1360,7 @@ void SE3Tracker::calculateWarpUpdate(
 		
         Vector6 v;
         
-		v[0] = z*gx + 0;
+		v[0] = z*gx + 0; 
         
 		v[1] = 0 + z*gy;
         

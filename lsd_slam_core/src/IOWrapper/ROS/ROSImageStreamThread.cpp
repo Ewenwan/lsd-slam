@@ -41,7 +41,7 @@ ROSImageStreamThread::ROSImageStreamThread()
 {
 	// subscribe
 	vid_channel = nh_.resolveName("image");
-	vid_sub          = nh_.subscribe(vid_channel,1, &ROSImageStreamThread::vidCb, this);
+	vid_sub     = nh_.subscribe(vid_channel,1, &ROSImageStreamThread::vidCb, this);
 
 
 	// wait for cam calib
@@ -110,7 +110,7 @@ void ROSImageStreamThread::operator()()
 }
 
 
-void ROSImageStreamThread::vidCb(const sensor_msgs::ImageConstPtr img)
+void ROSImageStreamThread::vidCb(const sensor_msgs::ImageConstPtr img)//接受此类型的图像消息
 {
 	if(!haveCalib) return;
 

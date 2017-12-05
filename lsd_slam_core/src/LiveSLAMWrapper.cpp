@@ -129,12 +129,12 @@ void LiveSLAMWrapper::newImageCallback(const cv::Mat& img, Timestamp imgTime)
 	// need to initialize
 	if(!isInitialized)
 	{
-		monoOdometry->randomInit(grayImg.data, imgTime.toSec(), 1);
+		monoOdometry->randomInit(grayImg.data, imgTime.toSec(), 1);//
 		isInitialized = true;
 	}
 	else if(isInitialized && monoOdometry != nullptr)
 	{
-		monoOdometry->trackFrame(grayImg.data,imageSeqNumber,false,imgTime.toSec());
+		monoOdometry->trackFrame(grayImg.data,imageSeqNumber,false,imgTime.toSec());//track
 	}
 }
 
@@ -147,6 +147,7 @@ void LiveSLAMWrapper::logCameraPose(const SE3& camToWorld, double time)
 	int num = snprintf(buffer, 1000, "%f %f %f %f %f %f %f %f\n",
 			time,
 			trans[0],
+
 			trans[1],
 			trans[2],
 			quat.x(),

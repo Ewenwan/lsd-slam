@@ -51,7 +51,7 @@ public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 
   Matrix4x4 A;
-  Vector4 b;
+  Vector4 b; 
 
   float  error;
   size_t num_constraints;
@@ -393,7 +393,7 @@ public:
 
   inline void update(const Vector6& J, const float& res, const float& weight)
   {
-    A.noalias() += J * J.transpose() * weight;
+    A.noalias() +=   J * J.transpose() * weight;
     b.noalias() -= J * (res * weight);
     error += res * res * weight;
     num_constraints += 1;
