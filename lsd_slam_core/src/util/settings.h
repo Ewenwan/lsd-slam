@@ -41,12 +41,12 @@ namespace lsd_slam
 #endif
 
 
-#if defined(NDEBUG)
-	#define enablePrintDebugInfo false
-#else
-	#define enablePrintDebugInfo true
-#endif
-
+// #if defined(NDEBUG)
+// 	#define enablePrintDebugInfo false
+// #else
+// 	#define enablePrintDebugInfo true
+// #endif
+#define enablePrintDebugInfo true
 /** ============== constants for validity handeling ======================= */
 
 // validity can take values between 0 and X, where X depends on the abs. gradient at that location:

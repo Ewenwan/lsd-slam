@@ -183,6 +183,7 @@ std::unordered_set<Frame*, std::hash<Frame*>, std::equal_to<Frame*>, Eigen::alig
 
 	int appearanceBased = 0;
 	fabMapResult_out = 0;
+    
 	if(includeFABMAP)
 	{
 		// Add Appearance-based Candidate, and all it's neighbours.
@@ -196,6 +197,7 @@ std::unordered_set<Frame*, std::hash<Frame*>, std::equal_to<Frame*>, Eigen::alig
 	}
 
 	if (enablePrintDebugInfo && printConstraintSearchInfo)
+	//if (printConstraintSearchInfo)
 		printf("Early LoopClosure-Candidates for %d: %d euclidean, %d appearance-based, %d total\n",
 				(int)keyframe->id(), (int)potentialReferenceFrames.size(), appearanceBased, (int)results.size());
 

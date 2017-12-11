@@ -270,6 +270,7 @@ void SlamSystem::constraintSearchThreadLoop()
 	boost::unique_lock<boost::mutex> lock(newKeyFrameMutex);
 	int failedToRetrack = 0;
 
+      
 	while(keepRunning)
 	{
 		if(newKeyFrames.size() == 0)
@@ -303,16 +304,15 @@ void SlamSystem::constraintSearchThreadLoop()
 
 			if(!doneSomething)
 			{
-				if(enablePrintDebugInfo && printConstraintSearchInfo)
-					printf("nothing to re-track... waiting.\n");
+// 				if(enablePrintDebugInfo && printConstraintSearchInfo)
+// 					printf("nothing to re-track... waiting.\n");
 				newKeyFrameCreatedSignal.timed_wait(lock,boost::posix_time::milliseconds(500));
 
 			}
 		}
 		else
 		{
-            printf("Mother Fuck\n");
-            printf("Mother dck\n");
+            
 			Frame* newKF = newKeyFrames.front();
 			newKeyFrames.pop_front();
 			lock.unlock();
@@ -1133,7 +1133,7 @@ void SlamSystem::testConstraint(
 		KFConstraintStruct* &e1_out, KFConstraintStruct* &e2_out,
 		Sim3 candidateToFrame_initialEstimate,
 		float strictness)
-{
+{                                                   
 	candidateTrackingReference->importFrame(candidate);
 
 	Sim3 FtoC = candidateToFrame_initialEstimate.inverse(), CtoF = candidateToFrame_initialEstimate;
@@ -1240,8 +1240,10 @@ int SlamSystem::findConstraintsForNewKeyFrames(Frame* newKeyFrame, bool forcePar
 	Frame* fabMapResult = 0;
 	std::unordered_set<Frame*, std::hash<Frame*>, std::equal_to<Frame*>,
 		Eigen::aligned_allocator< Frame* > > candidates = trackableKeyFrameSearch->findCandidates(newKeyFrame, fabMapResult, useFABMAP, closeCandidatesTH);
+    //寻找所有可能的回环候选关键帧
+        
 	std::map< Frame*, Sim3, std::less<Frame*>, Eigen::aligned_allocator<std::pair<Frame*, Sim3> > > candidateToFrame_initialEstimateMap;
-
+    
 
 	// erase the ones that are already neighbours.
 	for(std::unordered_set<Frame*>::iterator c = candidates.begin(); c != candidates.end();)
@@ -1274,10 +1276,11 @@ int SlamSystem::findConstraintsForNewKeyFrames(Frame* newKeyFrame, bool forcePar
 
 	// =============== distinguish between close and "far" candidates in Graph =================
 	// Do a first check on trackability of close candidates.
-	std::unordered_set<Frame*, std::hash<Frame*>, std::equal_to<Frame*>,
-		Eigen::aligned_allocator< Frame* > > closeCandidates;
-	std::vector<Frame*, Eigen::aligned_allocator<Frame*> > farCandidates;
-	Frame* parent = newKeyFrame->hasTrackingParent() ? newKeyFrame->getTrackingParent() : 0;
+	std::unordered_set<Frame*, std::hash<Frame*>, std::equal_to<Frame*>, Eigen::aligned_allocator< Frame* > > closeCandidates;
+	
+    std::vector<Frame*, Eigen::aligned_allocator<Frame*> > farCandidates;
+	
+    Frame* parent = newKeyFrame->hasTrackingParent() ? newKeyFrame->getTrackingParent() : 0;
 
 	int closeFailed = 0;
 	int closeInconsistent = 0;
@@ -1298,17 +1301,20 @@ int SlamSystem::findConstraintsForNewKeyFrames(Frame* newKeyFrame, bool forcePar
 		SE3 c2f_init = se3FromSim3(candidateToFrame_initialEstimateMap[candidate].inverse()).inverse();
 		c2f_init.so3() = c2f_init.so3() * disturbance;
 		SE3 c2f = constraintSE3Tracker->trackFrameOnPermaref(candidate, newKeyFrame, c2f_init);
-		if(!constraintSE3Tracker->trackingWasGood) {closeFailed++; continue;}
+		
+        
+        if(!constraintSE3Tracker->trackingWasGood) {closeFailed++; continue;}
 
 
 		SE3 f2c_init = se3FromSim3(candidateToFrame_initialEstimateMap[candidate]).inverse();
 		f2c_init.so3() = disturbance * f2c_init.so3();
 		SE3 f2c = constraintSE3Tracker->trackFrameOnPermaref(newKeyFrame, candidate, f2c_init);
-		if(!constraintSE3Tracker->trackingWasGood) {closeFailed++; continue;}
-
+		
+        if(!constraintSE3Tracker->trackingWasGood) {closeFailed++; continue;}
 		if((f2c.so3() * c2f.so3()).log().norm() >= 0.09) {closeInconsistent++; continue;}
 
-		closeCandidates.insert(candidate);
+		
+		closeCandidates.insert(candidate);//新的关键帧到候选回环帧的某个计算的距离小于0.09，认为是“close”的回环帧，insert
 	}
 
 
@@ -1334,8 +1340,8 @@ int SlamSystem::findConstraintsForNewKeyFrames(Frame* newKeyFrame, bool forcePar
 
 		if(distancesToNewKeyFrame.at(candidate) < 4)
 			continue;
-
-		farCandidates.push_back(candidate);
+        
+		farCandidates.push_back(candidate);//新的关键帧到候选回环帧的距离大于4，认为是“far”的回环帧,push_back
 	}
 
 
