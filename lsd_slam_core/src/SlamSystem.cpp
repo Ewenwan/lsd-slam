@@ -1417,6 +1417,18 @@ int SlamSystem::findConstraintsForNewKeyFrames(Frame* newKeyFrame, bool forcePar
 				(int)farCandidates.size(), farAll, farFailed, farInconsistent,
 				(int)closeCandidates.size() + (int)farCandidates.size());
 
+        
+    printf("\n\n\n Now is KeyFrame %d \n", newKeyFrame->id());
+    int i =0 ;
+    for(Frame* f : closeCandidates)
+    {
+        printf("Num %d closeCandidates is KeyFrame %d.\n", i,f->id());
+        i++;
+    }
+    for(int i = 0; i < farCandidates.size() ; i++)
+    {
+        printf("Num %d farCandidates is KeyFrame %d.\n", i,farCandidates[i]->id());
+    }
 
 
 	// =============== limit number of close candidates ===============
