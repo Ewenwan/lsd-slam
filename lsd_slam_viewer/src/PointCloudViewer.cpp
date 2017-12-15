@@ -124,7 +124,7 @@ void PointCloudViewer::addFrameMsg(lsd_slam_viewer::keyframeMsgConstPtr msg)
 {
 	meddleMutex.lock();
 
-	if(!msg->isKeyframe)
+	if(!msg->isKeyframe)//如果不是关键帧
 	{
 		if(currentCamDisplay->id > msg->id)
 		{
@@ -136,7 +136,7 @@ void PointCloudViewer::addFrameMsg(lsd_slam_viewer::keyframeMsgConstPtr msg)
 		lastAnimTime = lastCamTime = msg->time;
 		lastCamID = msg->id;
 	}
-	else
+	else//如果是关键帧
 		graphDisplay->addMsg(msg);
         //KeyFrameGraphDisplay* graphDisplay; 'graphDisplay' displays kf-graph
 
