@@ -1277,7 +1277,7 @@ int SlamSystem::findConstraintsForNewKeyFrames(Frame* newKeyFrame, bool forcePar
 	// =============== distinguish between close and "far" candidates in Graph =================
 	// Do a first check on trackability of close candidates.
 	std::unordered_set<Frame*, std::hash<Frame*>, std::equal_to<Frame*>, Eigen::aligned_allocator< Frame* > > closeCandidates;
-	
+	//close unordered set
     std::vector<Frame*, Eigen::aligned_allocator<Frame*> > farCandidates;
 	
     Frame* parent = newKeyFrame->hasTrackingParent() ? newKeyFrame->getTrackingParent() : 0;
@@ -1418,17 +1418,7 @@ int SlamSystem::findConstraintsForNewKeyFrames(Frame* newKeyFrame, bool forcePar
 				(int)closeCandidates.size() + (int)farCandidates.size());
 
         
-    printf("\n\n\n Now is KeyFrame %d \n", newKeyFrame->id());
-    int i =0 ;
-    for(Frame* f : closeCandidates)
-    {
-        printf("Num %d closeCandidates is KeyFrame %d.\n", i,f->id());
-        i++;
-    }
-    for(int i = 0; i < farCandidates.size() ; i++)
-    {
-        printf("Num %d farCandidates is KeyFrame %d.\n", i,farCandidates[i]->id());
-    }
+      
 
 
 	// =============== limit number of close candidates ===============
@@ -1468,6 +1458,26 @@ int SlamSystem::findConstraintsForNewKeyFrames(Frame* newKeyFrame, bool forcePar
 			farCandidates.pop_back();
 		}
 	}
+	
+	printf("\n\n\n Now is KeyFrame %d \n", newKeyFrame->id());
+    int i =0 ;
+    for(Frame* f : closeCandidates)
+    {
+        //printf("Num %d closeCandidates is KeyFrame %d.\n", i,f->id());
+        i++;
+        if( f->id() < 500 && newKeyFrame->id() >2000)
+        {
+            printf("close loop detected\n");
+        }
+    }
+    for(i = 0; i < farCandidates.size() ; i++)
+    {
+        //printf("Num %d farCandidates is KeyFrame %d.\n", i,farCandidates[i]->id());
+        if( farCandidates[i]->id() < 500 && newKeyFrame->id() >2000)
+        {
+            printf("far loop detected\n");
+        }
+    }
 
 
 

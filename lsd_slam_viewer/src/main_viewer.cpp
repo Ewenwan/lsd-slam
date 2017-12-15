@@ -40,7 +40,7 @@
 
 
 PointCloudViewer* viewer = 0;
-
+PointCloudViewer* another_viewer = 0;
 
 void dynConfCb(lsd_slam_viewer::LSDSLAMViewerParamsConfig &config, uint32_t level)
 {
@@ -155,21 +155,26 @@ int main( int argc, char** argv )
 
 	printf("Started QApplication thread\n");
 	// Read command lines arguments.
-	QApplication application(argc,argv);
+	QApplication application(argc,argv);//QApplication 类管理图形用户界面应用程序的控制流和主要设置
 
 	// Instantiate the viewer.
 	viewer = new PointCloudViewer();
+    
+    another_viewer = new PointCloudViewer();
 
 
 	#if QT_VERSION < 0x040000
 		// Set the viewer as the application main widget.
 		application.setMainWidget(viewer);
 	#else
-		viewer->setWindowTitle("PointCloud Viewer");
+		viewer->setWindowTitle("VSLAM PointCloud Viewer");
 	#endif
+        
+    another_viewer->setWindowTitle("Robot");    
 
 	// Make the viewer window visible on screen.
-	viewer->show();
+	viewer->show();//show the "VSLAM Robot PointCloud Viewer" window
+    another_viewer->show();
 
 	boost::thread rosThread;
 
