@@ -329,3 +329,10 @@ If you need some other way in which the map is published (e.g. publish the whole
 - try more translational movement and less roational movement
 
 
+LSD_SLAM 机器人开发
+===================================
+lsd_slam_core与 lsd_slam_viewer之间的ROS交互
+-----------------------------------
+### 1.core发布消息，viewer接受消息
+  
+

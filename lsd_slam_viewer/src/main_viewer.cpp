@@ -72,12 +72,12 @@ void frameCb(lsd_slam_viewer::keyframeMsgConstPtr msg)
 	if(msg->time > lastFrameTime) return;
 
 	if(viewer != 0)
-		viewer->addFrameMsg(msg);
+		viewer->addFrameMsg(msg);//添加帧信息
 }
 void graphCb(lsd_slam_viewer::keyframeGraphMsgConstPtr msg)
 {
 	if(viewer != 0)
-		viewer->addGraphMsg(msg);
+		viewer->addGraphMsg(msg);//添加图信息
 }
 
 
@@ -182,7 +182,7 @@ int main( int argc, char** argv )
 	{
 		rosThread = boost::thread(rosFileLoop, argc, argv);
 	}
-	else
+	else//执行rosThreadLoop
 	{
 		// start ROS thread
 		rosThread = boost::thread(rosThreadLoop, argc, argv);

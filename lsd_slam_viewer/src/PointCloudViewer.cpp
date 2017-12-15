@@ -118,6 +118,8 @@ void PointCloudViewer::reset()
 	animationPlaybackEnabled = false;
 }
 
+
+
 void PointCloudViewer::addFrameMsg(lsd_slam_viewer::keyframeMsgConstPtr msg)
 {
 	meddleMutex.lock();
@@ -130,11 +132,13 @@ void PointCloudViewer::addFrameMsg(lsd_slam_viewer::keyframeMsgConstPtr msg)
 			resetRequested = true;
 		}
 		currentCamDisplay->setFrom(msg);
+        //KeyFrameDisplay* currentCamDisplay; displays only current keyframe (which is not yet in the graph).
 		lastAnimTime = lastCamTime = msg->time;
 		lastCamID = msg->id;
 	}
 	else
 		graphDisplay->addMsg(msg);
+        //KeyFrameGraphDisplay* graphDisplay; 'graphDisplay' displays kf-graph
 
 	meddleMutex.unlock();
 }
@@ -143,7 +147,7 @@ void PointCloudViewer::addGraphMsg(lsd_slam_viewer::keyframeGraphMsgConstPtr msg
 {
 	meddleMutex.lock();
 
-	graphDisplay->addGraphMsg(msg);
+	graphDisplay->addGraphMsg(msg);//
 
 	meddleMutex.unlock();
 }
@@ -151,7 +155,7 @@ void PointCloudViewer::addGraphMsg(lsd_slam_viewer::keyframeGraphMsgConstPtr msg
 
 void PointCloudViewer::init()
 {
-	setAnimationPeriod(30);
+	setAnimationPeriod(30); 
 	startAnimation();
 }
 
