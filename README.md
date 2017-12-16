@@ -5,7 +5,7 @@ LSD_SLAM 机器人开发
 ### (1).core发布消息，viewer接受消息
 core发布消息的函数都在/lsd_slam_core/src/IOWrapper/ROS/ROSOutput3DWrapper.cpp::70中，
 </br>
-    virtual void publishKeyframeGraph(KeyFrameGraph* graph);
+    	virtual void publishKeyframeGraph(KeyFrameGraph* graph);
 
 	// publishes a keyframe. if that frame already existis, it is overwritten, otherwise it is added.
 	virtual void publishKeyframe(Frame* f);
