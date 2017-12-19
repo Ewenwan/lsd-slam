@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include "settings.h"
 #include "ros/package.h"
-
+#include <vector>
 #include <zlib.h>
 #include <iostream>
 
@@ -49,7 +49,6 @@
 
 using namespace qglviewer;
 using namespace std;
-
 
 
 PointCloudViewer::PointCloudViewer()
@@ -171,10 +170,7 @@ void PointCloudViewer::init()
 {
     robot_pose << 0,0,0,1;
     robot_origin << 0,0,0,1;
-    pose_pi    <<   1,0,0,
-                    0,1,0,
-                    0,0,1;
-    pose_sigma << 0,0,0;
+    
     cout.setf(ios::fixed);
 	setAnimationPeriod(30);//设置频率，这个很重要，后期需要调整
 	startAnimation();
@@ -489,7 +485,6 @@ void RobotViewer::init()
     particle_ = new Particle[nbPart_];
     glPointSize(8.0);
     setGridIsDrawn();
-    robot_pose << 0,0,0;
     //help();
     //setAnimationPeriod(30);//设置频率，这个很重要，后期需要调整
     startAnimation();
@@ -498,96 +493,30 @@ void RobotViewer::init()
 
 void RobotViewer::draw() 
 {
-    {
-//     float width = viewer->currentCamDisplay->width;
-//     float height = viewer->currentCamDisplay->height;
-//     if(width == 0)
-// 		return;
-//     float cx = viewer->currentCamDisplay->cx;
-//     float cy = viewer->currentCamDisplay->cy;
-//     float fx = viewer->currentCamDisplay->fx;
-//     float fy = viewer->currentCamDisplay->fy;
-//     
-// //     float cx = 1;
-// //     float cy = 1;
-// //     float fx = 1;
-// //     float fy = 1;
-//     
-//     //std::cout <<  camToWorld.matrix() << "\n\n";
-// 	glPushMatrix();
-// 
-// 		Sophus::Matrix4f m = viewer->currentCamDisplay->camToWorld.matrix();
-//         
-// 		glMultMatrixf((GLfloat*)m.data());//上载定义的矩阵m，右乘
-// 
-// 		
-//         glColor3f(1,0,0);
-// 		
-// 
-// 		glLineWidth(4);
-// 		glBegin(GL_LINES);
-//  		glVertex3f(0,0,0);//(0,0,0)为空间坐标原点，即万事万物都是从这一点开始观察的，这个就是小孔成像的那个孔
-//  		glVertex3f(0.05*(0-cx)/fx,0.05*(0-cy)/fy,0.05);
-//         
-// 		glVertex3f(0,0,0);
-// 		glVertex3f(0.05*(0-cx)/fx,0.05*(height-1-cy)/fy,0.05);
-//         
-// 		glVertex3f(0,0,0);
-// 		glVertex3f(0.05*(width-1-cx)/fx,0.05*(height-1-cy)/fy,0.05);
-//         
-// 		glVertex3f(0,0,0);
-// 		glVertex3f(0.05*(width-1-cx)/fx,0.05*(0-cy)/fy,0.05);
-// 
-// 		glVertex3f(0.05*(width-1-cx)/fx,0.05*(0-cy)/fy,0.05);
-// 		glVertex3f(0.05*(width-1-cx)/fx,0.05*(height-1-cy)/fy,0.05);
-// 
-// 		glVertex3f(0.05*(width-1-cx)/fx,0.05*(height-1-cy)/fy,0.05);
-// 		glVertex3f(0.05*(0-cx)/fx,0.05*(height-1-cy)/fy,0.05);
-// 
-// 		glVertex3f(0.05*(0-cx)/fx,0.05*(height-1-cy)/fy,0.05);
-// 		glVertex3f(0.05*(0-cx)/fx,0.05*(0-cy)/fy,0.05);
-// 
-// 		glVertex3f(0.05*(0-cx)/fx,0.05*(0-cy)/fy,0.05);
-// 		glVertex3f(0.05*(width-1-cx)/fx,0.05*(0-cy)/fy,0.05);
-// 
-//         //八条直线就组成了小电视
-// 		glEnd();
-// 	glPopMatrix();
-    }
-    //printf("draw OK!\n");
-  
-//   //if(viewer->currentCamDisplay->id > frame_id)
-//     {
-//         Sophus::Sim3f POSE = viewer->currentCamDisplay->camToWorld;
-//         //cout << "POSE is \n\n"<< POSE << "\n\n";
-//         //std::cout << "POSE is \n\n"<<  POSE.matrix() << "\n\n";
-//         
-//         Sophus::Matrix3f Rotation = POSE.rotationMatrix();
-//         //Sophus::Matrix3f Rotation = POSE.block(0,0,3,3);
-//         //cout << "Rotation is \n\n"<< Rotation << "\n\n";
-//         
-//         Sophus::Vector3f Translation = POSE.translation();
-//         //cout << "Translation is \n\n"<< Translation << "\n\n";
-//         
-//         
-        robot_pose = viewer->robot_pose;
-        
-        //matrix.block<p,q>(i,j)
-        
-        //cout << "This Robot in\n\n"<< robot_pose << "\n\n";
-        
-        glColor3f(1,0,0);
-        glLineWidth(4);
-        glBegin(GL_LINES);//GL_POINTS
+        if(viewer->currentCamDisplay->id > last_frame_id )
+        {
+         
+            robot_pose.push_back(viewer->robot_pose);
+            Robot_pose = viewer->robot_pose;
+                
+            //cout << "This Robot in\n\n"<< robot_pose << "\n\n";
+            cout << "robot_pose.size() = \n\n"<< robot_pose.size() << "\n\n";
             
-            //glVertex3f(100,120,120);
-            glVertex3f(0,0,0);
-            glVertex3f(robot_pose[0],robot_pose[1],robot_pose[2]);
-        glEnd();
-    //}
-    
-    
-    //frame_id = viewer->currentCamDisplay->id;
+            glColor3f(1,0,0);
+            glPointSize(4.0);
+            //glLineWidth(4);
+            glBegin(GL_POINTS);//GL_POINTS  GL_LINES
+                for(unsigned int i = 0 ; i < robot_pose.size() ; i++ )
+                {
+                    //Sophus::Vector4f rp = *robot_pose[i];
+                    glVertex3f(robot_pose[i][0],robot_pose[i][1],robot_pose[i][2]);
+                }
+                glVertex3f(Robot_pose[0],Robot_pose[1],Robot_pose[2]);
+            glEnd();
+            glFlush();
+            
+            last_frame_id = viewer->currentCamDisplay->id;
+        }
 
     
 }

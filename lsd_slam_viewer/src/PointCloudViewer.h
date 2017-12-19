@@ -175,8 +175,6 @@ protected :
 
 private:
     
-    Sophus::Vector3f pose_sigma;
-    Sophus::Matrix3f pose_pi;
     int last_frame_id;
     Sophus::Vector4f robot_pose;
     Sophus::Vector4f robot_origin;
@@ -259,9 +257,9 @@ protected:
 private:
   int nbPart_;
   Particle *particle_;
-  Sophus::Vector4f robot_pose;
-  //int frame_id;
-  
+  std::vector<Sophus::Vector4f> robot_pose;
+  int last_frame_id = 0;
+  Sophus::Vector4f Robot_pose;
   
 };
 
