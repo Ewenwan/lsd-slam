@@ -169,7 +169,8 @@ void PointCloudViewer::addGraphMsg(lsd_slam_viewer::keyframeGraphMsgConstPtr msg
 
 void PointCloudViewer::init()
 {
-    robot_pose << 0,0,0;
+    robot_pose << 0,0,0,1;
+    robot_origin << 0,0,0,1;
     pose_pi    <<   1,0,0,
                     0,1,0,
                     0,0,1;
@@ -257,12 +258,13 @@ void PointCloudViewer::draw()
 
 	if(showCurrentCamera)
     {
+        //printf("This PC frame is %d\n",currentCamDisplay->id);
         if(currentCamDisplay->id > last_frame_id)
         {
             printf("This PC frame is %d\n",currentCamDisplay->id);
-            Sophus::Sim3f POSE = currentCamDisplay->camToWorld;
+            Sophus::Matrix4f POSE = currentCamDisplay->camToWorld.matrix();
             //std::cout << "POSE is \n\n"<<  POSE.matrix() << "\n\n";
-            
+            /*
             Sophus::Matrix3f Rotation = POSE.rotationMatrix();
             //cout << "Rotation is \n\n"<< Rotation << "\n\n";
             
@@ -271,9 +273,9 @@ void PointCloudViewer::draw()
             
             pose_pi *= Rotation.transpose();
             
-            pose_sigma += pose_pi*Translation;
+            pose_sigma += pose_pi*Translation;*/
             
-            robot_pose = -pose_sigma;
+            robot_pose = POSE*robot_origin;
             
             cout << setprecision(8) << "Now This Robot in\n\n"<< robot_pose << "\n\n";
         }

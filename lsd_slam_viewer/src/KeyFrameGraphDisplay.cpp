@@ -47,11 +47,15 @@ void KeyFrameGraphDisplay::draw()
 
 	// draw keyframes
 	float color[3] = {0,0,1};
-	for(unsigned int i=0;i<keyframes.size();i++)
+	for(unsigned int i=0;i<keyframes.size();i++)//显示所有关键真
 	{
 		if(showKFCameras)
+        {
+            //printf("keyframes drawCam ,size = %d\n",keyframes.size());
 			keyframes[i]->drawCam(lineTesselation, color);
-
+            //keyframes[keyframes.size()-1]->drawCam(lineTesselation, color);
+        }
+    
 		if((showKFPointclouds && (int)i > cutFirstNKf) || i == keyframes.size()-1)
 			keyframes[i]->drawPC(pointTesselation, 1);
 	}

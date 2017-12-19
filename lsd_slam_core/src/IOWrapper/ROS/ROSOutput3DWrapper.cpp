@@ -82,6 +82,11 @@ void ROSOutput3DWrapper::publishKeyframe(Frame* f)
 	int h = f->height(publishLvl);
 
 	memcpy(fMsg.camToWorld.data(),f->getScaledCamToWorld().cast<float>().data(),sizeof(float)*7);
+    //关键真的位资
+    //frame->pose->thisToParent_raw = sim3FromSE3(toSophus(referenceToFrame.inverse()),1);//
+    //Sim3 getScaledCamToWorld(int num=0) { return pose->getCamToWorld();}
+    //camToWorld = trackingParent->getCamToWorld(recursionDepth+1) * thisToParent_raw;
+    
 	fMsg.fx = f->fx(publishLvl);
 	fMsg.fy = f->fy(publishLvl);
 	fMsg.cx = f->cx(publishLvl);
@@ -124,6 +129,8 @@ void ROSOutput3DWrapper::publishTrackedFrame(Frame* kf)
 
  
 	memcpy(fMsg.camToWorld.data(),kf->getScaledCamToWorld().cast<float>().data(),sizeof(float)*7);//复制现在的位资
+    //普通真的位资
+    
     
     printf("this frame %d\n",kf->id());
     //std::cout << "Now time is" << kf->timestamp() << "\n";

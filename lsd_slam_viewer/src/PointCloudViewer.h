@@ -178,7 +178,8 @@ private:
     Sophus::Vector3f pose_sigma;
     Sophus::Matrix3f pose_pi;
     int last_frame_id;
-    Sophus::Vector3f robot_pose;
+    Sophus::Vector4f robot_pose;
+    Sophus::Vector4f robot_origin;
     
 	// displays kf-graph
 	KeyFrameGraphDisplay* graphDisplay;
@@ -258,7 +259,7 @@ protected:
 private:
   int nbPart_;
   Particle *particle_;
-  Sophus::Vector3f robot_pose;
+  Sophus::Vector4f robot_pose;
   //int frame_id;
   
   

@@ -77,7 +77,7 @@ void KeyFrameDisplay::setFrom(lsd_slam_viewer::keyframeMsgConstPtr msg)
 	cxi = -cx / fx;
 	cyi = -cy / fy;
 
-	width = msg->width;
+	width = msg->width;//设置宽度，作为图像来了的依据
 	height = msg->height;
 	id = msg->id;
 	time = msg->time;
@@ -228,12 +228,13 @@ void KeyFrameDisplay::drawCam(float lineWidth, float* color)
 	if(width == 0)
 		return;
 
-    //std::cout <<  "camToWorld.matrix() is "<<camToWorld.matrix() << "\n\n";
+    //std::cout <<  "camToWorld.matrix() is \n "<<camToWorld.matrix() << "\n\n";
 	glPushMatrix();
 
 		Sophus::Matrix4f m = camToWorld.matrix();
         
-		glMultMatrixf((GLfloat*)m.data());//上载定义的矩阵m，右乘
+		glMultMatrixf((GLfloat*)m.data());
+        //当前矩阵式C，上载相机位资转换矩阵m，右乘，得到相机视角为 C*m
 
 		if(color == 0)
 			glColor3f(1,0,0);

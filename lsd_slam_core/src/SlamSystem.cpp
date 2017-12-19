@@ -208,7 +208,7 @@ void SlamSystem::mappingThreadLoop()
 	printf("Started mapping thread!\n");
 	while(keepRunning)
 	{
-		if (!doMappingIteration())
+		if (!doMappingIteration())//运行mapping迭代
 		{
 			boost::unique_lock<boost::mutex> lock(unmappedTrackedFramesMutex);
 			unmappedTrackedFramesSignal.timed_wait(lock,boost::posix_time::milliseconds(200));	// slight chance of deadlock otherwise
@@ -320,7 +320,7 @@ void SlamSystem::constraintSearchThreadLoop()
 			struct timeval tv_start, tv_end;
 			gettimeofday(&tv_start, NULL);
 
-			findConstraintsForNewKeyFrames(newKF, true, true, 1.0);
+			findConstraintsForNewKeyFrames(newKF, true, true, 1.0);//关键真之间做track
 			failedToRetrack=0;
 			gettimeofday(&tv_end, NULL);
 			msFindConstraintsItaration = 0.9*msFindConstraintsItaration + 0.1*((tv_end.tv_sec-tv_start.tv_sec)*1000.0f + (tv_end.tv_usec-tv_start.tv_usec)/1000.0f);
@@ -424,7 +424,7 @@ void SlamSystem::finishCurrentKeyframe()
 	}
 
 	if(outputWrapper!= 0)
-		outputWrapper->publishKeyframe(currentKeyFrame.get());
+		outputWrapper->publishKeyframe(currentKeyFrame.get());//发布关键真消息
 }
 
 void SlamSystem::discardCurrentKeyframe()
@@ -487,7 +487,7 @@ void SlamSystem::createNewCurrentKeyframe(std::shared_ptr<Frame> newKeyframeCand
 	}
 
 	currentKeyFrameMutex.lock();
-	currentKeyFrame = newKeyframeCandidate;
+	currentKeyFrame = newKeyframeCandidate;//真正的创建关键真
 	currentKeyFrameMutex.unlock();
 }
 void SlamSystem::loadNewCurrentKeyframe(Frame* keyframeToLoad)
@@ -506,7 +506,7 @@ void SlamSystem::loadNewCurrentKeyframe(Frame* keyframeToLoad)
 	currentKeyFrameMutex.unlock();
 }
 
-void SlamSystem::changeKeyframe(bool noCreate, bool force, float maxScore)
+void SlamSystem::changeKeyframe(bool noCreate, bool force, float maxScore)//改变到现在这个关键真
 {
 	Frame* newReferenceKF=0;
 	std::shared_ptr<Frame> newKeyframeCandidate = latestTrackedFrame;
@@ -782,9 +782,9 @@ bool SlamSystem::doMappingIteration()
 		}
 
 
-		if (createNewKeyFrame)
+		if (createNewKeyFrame)//如果要创建关键真
 		{
-			finishCurrentKeyframe();
+			finishCurrentKeyframe();//取消现在这个关键真
 			changeKeyframe(false, true, 1.0f);
 
 
@@ -904,11 +904,16 @@ void SlamSystem::trackFrame(uchar* image, unsigned int frameID, bool blockUntilM
 		return;
 	}
 
+	/*
+     * TrackingReference* trackingReference
+     * TrackingReference其中有一个指针Frame* keyframe，用来保存关键真
+    */
 	currentKeyFrameMutex.lock();
 	bool my_createNewKeyframe = createNewKeyFrame;	// pre-save here, to make decision afterwards.
 	if(trackingReference->keyframe != currentKeyFrame.get() || currentKeyFrame->depthHasBeenUpdatedFlag)
 	{
 		trackingReference->importFrame(currentKeyFrame.get());
+        //keyframe = sourceKF = currentKeyFrame;导入了关键真的指针
 		currentKeyFrame->depthHasBeenUpdatedFlag = false;
 		trackingReferenceFrameSharedPT = currentKeyFrame;
 	}
@@ -935,8 +940,8 @@ void SlamSystem::trackFrame(uchar* image, unsigned int frameID, bool blockUntilM
 			trackingReference,
 			trackingNewFrame.get(),
 			frameToReference_initialEstimate);
-
-
+    //调用位资跟踪函数进行位资track
+    
 	gettimeofday(&tv_end, NULL);
 	msTrackFrame = 0.9*msTrackFrame + 0.1*((tv_end.tv_sec-tv_start.tv_sec)*1000.0f + (tv_end.tv_usec-tv_start.tv_usec)/1000.0f);
 	nTrackFrame++;
@@ -945,7 +950,7 @@ void SlamSystem::trackFrame(uchar* image, unsigned int frameID, bool blockUntilM
 	tracking_lastUsage = tracker->pointUsage;
 	tracking_lastGoodPerBad = tracker->lastGoodCount / (tracker->lastGoodCount + tracker->lastBadCount);
 	tracking_lastGoodPerTotal = tracker->lastGoodCount / (trackingNewFrame->width(SE3TRACKING_MIN_LEVEL)*trackingNewFrame->height(SE3TRACKING_MIN_LEVEL));
-
+    //保存track好坏的结果
 
 	if(manualTrackingLossIndicated || tracker->diverged || (keyFrameGraph->keyframesAll.size() > INITIALIZATION_PHASE_COUNT && !tracker->trackingWasGood))
 	{
@@ -996,20 +1001,24 @@ void SlamSystem::trackFrame(uchar* image, unsigned int frameID, bool blockUntilM
 	}
 
 
-	// Keyframe selection
+	// Keyframe selection 满足距离条件选取关键真
 	latestTrackedFrame = trackingNewFrame;
+    /*很重要的参数，在changeKeyframe(bool noCreate, bool force, float maxScore)函数中有
+	Frame* newReferenceKF=0;
+	std::shared_ptr<Frame> newKeyframeCandidate = latestTrackedFrame;
+     * */
 	if (!my_createNewKeyframe && currentKeyFrame->numMappedOnThisTotal > MIN_NUM_MAPPED)
 	{
 		Sophus::Vector3d dist = newRefToFrame_poseUpdate.translation() * currentKeyFrame->meanIdepth;
 		float minVal = fmin(0.2f + keyFrameGraph->keyframesAll.size() * 0.8f / INITIALIZATION_PHASE_COUNT,1.0f);
-
+        
 		if(keyFrameGraph->keyframesAll.size() < INITIALIZATION_PHASE_COUNT)	minVal *= 0.7;
 
 		lastTrackingClosenessScore = trackableKeyFrameSearch->getRefFrameScore(dist.dot(dist), tracker->pointUsage);
 
 		if (lastTrackingClosenessScore > minVal)
 		{
-			createNewKeyFrame = true;
+			createNewKeyFrame = true;//选取关键真
 
 			if(enablePrintDebugInfo && printKeyframeSelectionInfo)
 				printf("SELECT %d on %d! dist %.3f + usage %.3f = %.3f > 1\n",trackingNewFrame->id(),trackingNewFrame->getTrackingParent()->id(), dist.dot(dist), tracker->pointUsage, trackableKeyFrameSearch->getRefFrameScore(dist.dot(dist), tracker->pointUsage));
@@ -1029,7 +1038,7 @@ void SlamSystem::trackFrame(uchar* image, unsigned int frameID, bool blockUntilM
 	unmappedTrackedFramesSignal.notify_one();
 	unmappedTrackedFramesMutex.unlock();
 
-	// implement blocking
+	// implement blocking 竟然为了mapping去阻塞住track，不解？？？
 	if(blockUntilMapped && trackingIsGood)
 	{
 		boost::unique_lock<boost::mutex> lock(newFrameMappedMutex);
@@ -1055,6 +1064,14 @@ float SlamSystem::tryTrackSim3(
 			B->keyframe,
 			BtoA,
 			lvlStart,lvlEnd);
+    /*
+     * Sim3 Sim3Tracker::trackFrameSim3(
+		TrackingReference* reference,
+		Frame* frame,
+		const Sim3& frameToReference_initialEstimate,
+		int startLevel, int finalLevel)
+		也是返回的frame到参考真的变换
+     */
 	Matrix7x7 BtoAInfo = constraintTracker->lastSim3Hessian;
 	float BtoA_meanResidual = constraintTracker->lastResidual;
 	float BtoA_meanDResidual = constraintTracker->lastDepthResidual;

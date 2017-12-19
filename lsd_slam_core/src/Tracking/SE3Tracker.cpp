@@ -535,9 +535,17 @@ SE3 SE3Tracker::trackFrame(
     //然后更新传入帧的属性,记录误差,到参考帧的变换,以及参考帧的信息,最后返回当前帧到参考帧的变换
 	frame->initialTrackedResidual = lastResidual / pointUsage;//
 	
+	/*
+     *  #define toSophus(x) ((x).cast<float>()) 还是矩阵
+        Sophus::SE3f referenceToFrame
+        Sim3 thisToParent_raw; 
+	*/
 	frame->pose->thisToParent_raw = sim3FromSE3(toSophus(referenceToFrame.inverse()),1);//
-	
-    frame->pose->trackingParent = reference->keyframe->pose;//
+	//将参考真到现在真的SE3变换转换成尺度为1的Sim3变换，再求溺矩阵转变成现在真到参考真
+    
+    frame->pose->trackingParent = reference->keyframe->pose;//上一真的位资是上一个关键真的位资
+    
+    //camToWorld = trackingParent->getCamToWorld(recursionDepth+1) * thisToParent_raw;
     
 	return toSophus(referenceToFrame.inverse());
 }
