@@ -64,7 +64,7 @@ KeyFrameDisplay::~KeyFrameDisplay()
 
 void KeyFrameDisplay::setFrom(lsd_slam_viewer::keyframeMsgConstPtr msg)
 {
-	// copy over campose.
+	// copy over campose.首先复制现在的位资
 	memcpy(camToWorld.data(), msg->camToWorld.data(), 7*sizeof(float));
 
 	fx = msg->fx;
@@ -97,7 +97,7 @@ void KeyFrameDisplay::setFrom(lsd_slam_viewer::keyframeMsgConstPtr msg)
 	else
 	{
 		originalInput = new InputPointDense[width*height];
-		memcpy(originalInput, msg->pointcloud.data(), width*height*sizeof(InputPointDense));
+		memcpy(originalInput, msg->pointcloud.data(), width*height*sizeof(InputPointDense));//复制点云信息
 	}
 
 	glBuffersValid = false;
@@ -228,11 +228,12 @@ void KeyFrameDisplay::drawCam(float lineWidth, float* color)
 	if(width == 0)
 		return;
 
-
+    //std::cout <<  "camToWorld.matrix() is "<<camToWorld.matrix() << "\n\n";
 	glPushMatrix();
 
 		Sophus::Matrix4f m = camToWorld.matrix();
-		glMultMatrixf((GLfloat*)m.data());
+        
+		glMultMatrixf((GLfloat*)m.data());//上载定义的矩阵m，右乘
 
 		if(color == 0)
 			glColor3f(1,0,0);
@@ -241,12 +242,15 @@ void KeyFrameDisplay::drawCam(float lineWidth, float* color)
 
 		glLineWidth(lineWidth);
 		glBegin(GL_LINES);
-		glVertex3f(0,0,0);
-		glVertex3f(0.05*(0-cx)/fx,0.05*(0-cy)/fy,0.05);
+ 		glVertex3f(0,0,0);//(0,0,0)为空间坐标原点，即万事万物都是从这一点开始观察的，这个就是小孔成像的那个孔
+ 		glVertex3f(0.05*(0-cx)/fx,0.05*(0-cy)/fy,0.05);
+        
 		glVertex3f(0,0,0);
 		glVertex3f(0.05*(0-cx)/fx,0.05*(height-1-cy)/fy,0.05);
+        
 		glVertex3f(0,0,0);
 		glVertex3f(0.05*(width-1-cx)/fx,0.05*(height-1-cy)/fy,0.05);
+        
 		glVertex3f(0,0,0);
 		glVertex3f(0.05*(width-1-cx)/fx,0.05*(0-cy)/fy,0.05);
 
@@ -262,6 +266,7 @@ void KeyFrameDisplay::drawCam(float lineWidth, float* color)
 		glVertex3f(0.05*(0-cx)/fx,0.05*(0-cy)/fy,0.05);
 		glVertex3f(0.05*(width-1-cx)/fx,0.05*(0-cy)/fy,0.05);
 
+        //八条直线就组成了小电视
 		glEnd();
 	glPopMatrix();
 }

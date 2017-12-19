@@ -29,7 +29,7 @@
 #include "qevent.h"
 #include "lsd_slam_viewer/keyframeMsg.h"
 #include "lsd_slam_viewer/keyframeGraphMsg.h"
-
+#include "sophus/sim3.hpp"
 #include "QGLViewer/keyFrameInterpolator.h"
 
 class QApplication;
@@ -37,6 +37,7 @@ class QApplication;
 class KeyFrameGraphDisplay;
 class CameraDisplay;
 class KeyFrameDisplay;
+class RobotViewer;
 
 #include "settings.h"
 
@@ -150,10 +151,11 @@ public:
 
 class PointCloudViewer : public QGLViewer
 {
-public:
-	PointCloudViewer();
-	~PointCloudViewer();
 
+    friend RobotViewer;    
+public:
+    PointCloudViewer();
+	~PointCloudViewer();
 
 	void reset();
 
@@ -172,7 +174,12 @@ protected :
 
 
 private:
-
+    
+    Sophus::Vector3f pose_sigma;
+    Sophus::Matrix3f pose_pi;
+    int last_frame_id;
+    Sophus::Vector3f robot_pose;
+    
 	// displays kf-graph
 	KeyFrameGraphDisplay* graphDisplay;
 
@@ -223,6 +230,37 @@ private:
 
 
 	void remakeAnimation();
+    
+    
 };
 
+
+class Particle {
+public:
+  Particle();
+
+  void init();
+  void draw();
+  void animate();
+
+private:
+  qglviewer::Vec speed_, pos_;
+  int age_, ageMax_;
+};
+
+class RobotViewer : public QGLViewer {
+protected:
+  virtual void draw();
+  virtual void init();
+  virtual void animate();
+  virtual QString helpString() const;
+
+private:
+  int nbPart_;
+  Particle *particle_;
+  Sophus::Vector3f robot_pose;
+  //int frame_id;
+  
+  
+};
 

@@ -988,7 +988,8 @@ void SlamSystem::trackFrame(uchar* image, unsigned int frameID, bool blockUntilM
 	keyFrameGraph->addFrame(trackingNewFrame.get());
 
 
-	//Sim3 lastTrackedCamToWorld = mostCurrentTrackedFrame->getScaledCamToWorld();//  mostCurrentTrackedFrame->TrackingParent->getScaledCamToWorld() * sim3FromSE3(mostCurrentTrackedFrame->thisToParent_SE3TrackingResult, 1.0);
+	//Sim3 lastTrackedCamToWorld = mostCurrentTrackedFrame->getScaledCamToWorld();
+    //  mostCurrentTrackedFrame->TrackingParent->getScaledCamToWorld() * sim3FromSE3(mostCurrentTrackedFrame->thisToParent_SE3TrackingResult, 1.0);
 	if (outputWrapper != 0)
 	{
 		outputWrapper->publishTrackedFrame(trackingNewFrame.get());

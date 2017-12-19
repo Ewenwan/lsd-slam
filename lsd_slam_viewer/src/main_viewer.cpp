@@ -17,30 +17,10 @@
 * You should have received a copy of the GNU General Public License
 * along with dvo. If not, see <http://www.gnu.org/licenses/>.
 */
-
-
-#include "ros/ros.h"
-#include "boost/thread.hpp"
-#include "settings.h"
-#include "PointCloudViewer.h"
-
-#include <dynamic_reconfigure/server.h>
-#include "lsd_slam_viewer/LSDSLAMViewerParamsConfig.h"
-#include <qapplication.h>
-
-
-#include "lsd_slam_viewer/keyframeGraphMsg.h"
-#include "lsd_slam_viewer/keyframeMsg.h"
-
-
-#include "boost/foreach.hpp"
-#include "rosbag/bag.h"
-#include "rosbag/query.h"
-#include "rosbag/view.h"
-
+#include "main_viewer.h"
 
 PointCloudViewer* viewer = 0;
-PointCloudViewer* another_viewer = 0;
+
 
 void dynConfCb(lsd_slam_viewer::LSDSLAMViewerParamsConfig &config, uint32_t level)
 {
@@ -156,25 +136,31 @@ int main( int argc, char** argv )
 	printf("Started QApplication thread\n");
 	// Read command lines arguments.
 	QApplication application(argc,argv);//QApplication 类管理图形用户界面应用程序的控制流和主要设置
+   
+    RobotViewer robot;
+
+    robot.setWindowTitle("RobotMap");
+
+    robot.show();
+
+  
+  
 
 	// Instantiate the viewer.
 	viewer = new PointCloudViewer();
     
-    another_viewer = new PointCloudViewer();
-
+   
 
 	#if QT_VERSION < 0x040000
 		// Set the viewer as the application main widget.
 		application.setMainWidget(viewer);
 	#else
-		viewer->setWindowTitle("VSLAM PointCloud Viewer");
+		viewer->setWindowTitle("VSLAM PointCloud");
 	#endif
-        
-    another_viewer->setWindowTitle("Robot");    
+    
 
 	// Make the viewer window visible on screen.
 	viewer->show();//show the "VSLAM Robot PointCloud Viewer" window
-    another_viewer->show();
 
 	boost::thread rosThread;
 

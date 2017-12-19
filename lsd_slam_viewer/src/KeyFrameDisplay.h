@@ -26,7 +26,7 @@
 #include "QGLViewer/qglviewer.h"
 #include "lsd_slam_viewer/keyframeMsg.h"
 #include "sophus/sim3.hpp"
-
+#include <iostream>
 #include <sstream>
 #include <fstream>
 
@@ -72,13 +72,16 @@ public:
 	// camera pose
 	// may be updated by kf-graph.
 	Sophus::Sim3f camToWorld;
+  
+    
 
 private:
 	// camera parameter
 	// fixed.
 	float fx,fy,cx,cy;
+    int width, height;
 	float fxi,fyi,cxi,cyi;
-	int width, height;
+	
 
 	float my_scaledTH, my_absTH, my_scale;
 	int my_minNearSupport;

@@ -142,7 +142,7 @@ void KeyFrameGraphDisplay::draw()
 void KeyFrameGraphDisplay::addMsg(lsd_slam_viewer::keyframeMsgConstPtr msg)
 {
 	dataMutex.lock();
-	if(keyframesByID.count(msg->id) == 0)
+	if(keyframesByID.count(msg->id) == 0)//如果map结构中没有这一真的关键值，就添加这一真
 	{
 		KeyFrameDisplay* disp = new KeyFrameDisplay();
 		keyframesByID[msg->id] = disp;

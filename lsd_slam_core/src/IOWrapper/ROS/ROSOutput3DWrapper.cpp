@@ -93,11 +93,12 @@ void ROSOutput3DWrapper::publishKeyframe(Frame* f)
 	fMsg.pointcloud.resize(w*h*sizeof(InputPointDense));
 
 	InputPointDense* pc = (InputPointDense*)fMsg.pointcloud.data();
+    //关键真有点云信息
 
 	const float* idepth = f->idepth(publishLvl);
 	const float* idepthVar = f->idepthVar(publishLvl);
 	const float* color = f->image(publishLvl);
-
+    //将深度图和深度方差图加入到pc指针中
 	for(int idx=0;idx < w*h; idx++)
 	{
 		pc[idx].idepth = idepth[idx];
@@ -119,9 +120,16 @@ void ROSOutput3DWrapper::publishTrackedFrame(Frame* kf)
 	fMsg.id = kf->id();
 	fMsg.time = kf->timestamp();
 	fMsg.isKeyframe = false;
+    //fMsg.robot_coordnate = false;
 
-
-	memcpy(fMsg.camToWorld.data(),kf->getScaledCamToWorld().cast<float>().data(),sizeof(float)*7);
+ 
+	memcpy(fMsg.camToWorld.data(),kf->getScaledCamToWorld().cast<float>().data(),sizeof(float)*7);//复制现在的位资
+    
+    printf("this frame %d\n",kf->id());
+    //std::cout << "Now time is" << kf->timestamp() << "\n";
+    std::cout << kf->getScaledCamToWorld().matrix() << "\n";  
+    
+    
 	fMsg.fx = kf->fx(publishLvl);
 	fMsg.fy = kf->fy(publishLvl);
 	fMsg.cx = kf->cx(publishLvl);
@@ -129,13 +137,15 @@ void ROSOutput3DWrapper::publishTrackedFrame(Frame* kf)
 	fMsg.width = kf->width(publishLvl);
 	fMsg.height = kf->height(publishLvl);
 
-	fMsg.pointcloud.clear();
+	fMsg.pointcloud.clear();//普通真没有点云信息
 
 	liveframe_publisher.publish(fMsg);
 
-
+//但是会发布位资信息
 	SE3 camToWorld = se3FromSim3(kf->getScaledCamToWorld());
-
+    std::cout << "\ncamToWorld SE3 is \n"<< camToWorld.matrix() << "\n";  
+    
+    
 	geometry_msgs::PoseStamped pMsg;
 
 	pMsg.pose.position.x = camToWorld.translation()[0];
@@ -157,6 +167,8 @@ void ROSOutput3DWrapper::publishTrackedFrame(Frame* kf)
 	pMsg.header.stamp = ros::Time(kf->timestamp());
 	pMsg.header.frame_id = "world";
 	pose_publisher.publish(pMsg);
+    
+    
 }
 
 
