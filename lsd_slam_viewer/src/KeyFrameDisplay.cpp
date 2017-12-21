@@ -215,9 +215,6 @@ void KeyFrameDisplay::refreshPC()
 		originalInput = 0;
 	}
 
-
-
-
 	delete[] tmpBuffer;
 }
 
@@ -272,7 +269,7 @@ void KeyFrameDisplay::drawCam(float lineWidth, float* color)
 	glPopMatrix();
 }
 
-int KeyFrameDisplay::flushPC(std::ofstream* f)
+int KeyFrameDisplay::flushPC(std::ofstream* f)//用于按键保存点云到磁盘
 {
 
 	MyVertex* tmpBuffer = new MyVertex[width*height];

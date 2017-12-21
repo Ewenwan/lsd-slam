@@ -125,7 +125,7 @@ void ROSOutput3DWrapper::publishTrackedFrame(Frame* kf)
 	fMsg.id = kf->id();
 	fMsg.time = kf->timestamp();
 	fMsg.isKeyframe = false;
-    //fMsg.robot_coordnate = false;
+    
 
  
 	memcpy(fMsg.camToWorld.data(),kf->getScaledCamToWorld().cast<float>().data(),sizeof(float)*7);//复制现在的位资
@@ -148,7 +148,7 @@ void ROSOutput3DWrapper::publishTrackedFrame(Frame* kf)
 
 	liveframe_publisher.publish(fMsg);
 
-//但是会发布位资信息
+    //但是会发布位资信息
 	SE3 camToWorld = se3FromSim3(kf->getScaledCamToWorld());
     std::cout << "\ncamToWorld SE3 is \n"<< camToWorld.matrix() << "\n";  
     

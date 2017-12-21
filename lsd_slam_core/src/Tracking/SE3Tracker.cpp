@@ -25,6 +25,7 @@
 #include "util/globalFuncs.h"
 #include "IOWrapper/ImageDisplay.h"
 #include "Tracking/LGSX.h"
+#include "../util/settings.h"
 
 #include <Eigen/Core>
 
