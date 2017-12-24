@@ -27,9 +27,11 @@
 #include "lsd_slam_viewer/keyframeMsg.h"
 #include "sophus/sim3.hpp"
 #include "../msg_gen/cpp/include/lsd_slam_viewer/keyframeMsg.h"
+#include "../thirdparty/Sophus/sophus/sim3.hpp"
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <opencv2/core/types_c.h>
 
 struct MyVertex
 {

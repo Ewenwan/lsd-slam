@@ -71,7 +71,7 @@ void KeyFrameDisplay::setFrom(lsd_slam_viewer::keyframeMsgConstPtr msg)
 	fy = msg->fy;
 	cx = msg->cx;
 	cy = msg->cy;
-
+    
 	fxi = 1/fx;
 	fyi = 1/fy;
 	cxi = -cx / fx;
@@ -96,7 +96,7 @@ void KeyFrameDisplay::setFrom(lsd_slam_viewer::keyframeMsgConstPtr msg)
 	}
 	else
 	{
-		originalInput = new InputPointDense[width*height];
+		originalInput = new InputPointDense[width*height];//pointer
 		memcpy(originalInput, msg->pointcloud.data(), width*height*sizeof(InputPointDense));//复制点云信息
 	}
 
@@ -135,14 +135,23 @@ void KeyFrameDisplay::refreshPC()
 		return;
 
 
+
+
 	// make data
 	MyVertex* tmpBuffer = new MyVertex[width*height];
 
-	my_scaledTH =scaledDepthVarTH;
-	my_absTH = absDepthVarTH;
+    /*
+     *  float scaledDepthVarTH = 1;
+        float absDepthVarTH = 1;
+        int minNearSupport = 5;
+        int cutFirstNKf = 5;
+        int sparsifyFactor = 1;
+     * */
+	my_scaledTH =scaledDepthVarTH;//scaledDepthVarTH = 1;
+	my_absTH = absDepthVarTH;     //absDepthVarTH = 1;
 	my_scale = camToWorld.scale();
-	my_minNearSupport = minNearSupport;
-	my_sparsifyFactor = sparsifyFactor;
+	my_minNearSupport = minNearSupport;//minNearSupport = 5;
+	my_sparsifyFactor = sparsifyFactor;//sparsifyFactor = 1;稀疏因子
 	// data is directly in ros message, in correct format.
 	vertexBufferNumPoints = 0;
 
@@ -155,9 +164,11 @@ void KeyFrameDisplay::refreshPC()
 
 
 			if(my_sparsifyFactor > 1 && rand()%my_sparsifyFactor != 0) continue;
+            //稀疏因子，是为了不是所有的图都去建立点云，随机的跳过某些帧
 
 			float depth = 1 / originalInput[x+y*width].idepth;
-			float depth4 = depth*depth; depth4*= depth4;
+			float depth4 = depth*depth;
+            depth4*= depth4;//depth四次方
 
 
 			if(originalInput[x+y*width].idepth_var * depth4 > my_scaledTH)
@@ -177,11 +188,11 @@ void KeyFrameDisplay::refreshPC()
 						{
 							float diff = originalInput[idx].idepth - 1.0f / depth;
 							if(diff*diff < 2*originalInput[x+y*width].idepth_var)
-								nearSupport++;
+								nearSupport++;//计算与周围像素的区分度
 						}
 					}
 
-				if(nearSupport < my_minNearSupport)
+				if(nearSupport < my_minNearSupport)//太近了返回
 					continue;
 			}
 
@@ -209,7 +220,7 @@ void KeyFrameDisplay::refreshPC()
 
 
 
-	if(!keepInMemory)
+	if(!keepInMemory)//keepInMemory=true;
 	{
 		delete[] originalInput;
 		originalInput = 0;
@@ -342,63 +353,60 @@ int KeyFrameDisplay::flushPC(std::ofstream* f)//用于按键保存点云到磁�
 	return num;
 }
 
-void KeyFrameDisplay::drawPC(float pointSize, float alpha)
-{
-	refreshPC();
+void KeyFrameDisplay::drawPC(float pointSize, float alpha) {
+    refreshPC();
 
-	if(!vertexBufferIdValid)
-	{
-		return;
-	}
+    if (!vertexBufferIdValid) {
+        return;
+    }
 
-	GLfloat LightColor[] = {1, 1, 1, 1};
-	if(alpha < 1)
-	{
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		LightColor[0] = LightColor[1] = 0;
-		glEnable(GL_LIGHTING);
-		glDisable(GL_LIGHT1);
+    GLfloat LightColor[] = {1, 1, 1, 1};
 
-		glLightfv (GL_LIGHT0, GL_AMBIENT, LightColor);
-	}
-	else
-	{
-		glDisable(GL_LIGHTING);
-	}
+    if (alpha < 1) {//alpha=1
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        LightColor[0] = LightColor[1] = 0;
+        glEnable(GL_LIGHTING);
+        glDisable(GL_LIGHT1);
 
+        glLightfv(GL_LIGHT0, GL_AMBIENT, LightColor);
+    } else//进入这个分支
+    {
+        //以下是真正的将之前的点云信息显示在屏幕上
+        glDisable(GL_LIGHTING);
+        glPushMatrix();
 
-	glPushMatrix();
+        Sophus::Matrix4f m = camToWorld.matrix();
+        glMultMatrixf((GLfloat *) m.data());
+        //
+        glPointSize(pointSize);
 
-		Sophus::Matrix4f m = camToWorld.matrix();
-		glMultMatrixf((GLfloat*)m.data());
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
 
-		glPointSize(pointSize);
+        glVertexPointer(3, GL_FLOAT, sizeof(MyVertex), 0);
+        glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(MyVertex), (const void *) (3 * sizeof(float)));
 
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+        //使能点列阵
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
 
-		glVertexPointer(3, GL_FLOAT, sizeof(MyVertex), 0);
-		glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(MyVertex), (const void*) (3*sizeof(float)));
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_COLOR_ARRAY);
-
-		glDrawArrays(GL_POINTS, 0, vertexBufferNumPoints);
-
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
-
-	glPopMatrix();
+        //绘制图元，GL_POINTS点，vertexBufferNumPoints点的个数
+        glDrawArrays(GL_POINTS, 0, vertexBufferNumPoints);
 
 
+        //失能点列阵
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+
+        glPopMatrix();
 
 
-	if(alpha < 1)
-	{
-		glDisable(GL_BLEND);
-		glDisable(GL_LIGHTING);
-		LightColor[2] = LightColor[1] = LightColor[0] = 1;
-		glLightfv (GL_LIGHT0, GL_AMBIENT_AND_DIFFUSE, LightColor);
-	}
+        if (alpha < 1) {
+            glDisable(GL_BLEND);
+            glDisable(GL_LIGHTING);
+            LightColor[2] = LightColor[1] = LightColor[0] = 1;
+            glLightfv(GL_LIGHT0, GL_AMBIENT_AND_DIFFUSE, LightColor);
+        }
+    }
 }
 

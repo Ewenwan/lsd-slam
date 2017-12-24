@@ -18,6 +18,7 @@
 * along with dvo. If not, see <http://www.gnu.org/licenses/>.
 */
 #include "main_viewer.h"
+#include "../cfg/cpp/lsd_slam_viewer/LSDSLAMViewerParamsConfig.h"
 
 PointCloudViewer* viewer = 0;
 

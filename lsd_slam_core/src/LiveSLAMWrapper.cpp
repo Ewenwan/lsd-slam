@@ -104,7 +104,7 @@ void LiveSLAMWrapper::Loop()
 		
 		// process image
 		//Util::displayImage("MyVideo", image.data);
-		newImageCallback(image.data, image.timestamp);
+		newImageCallback(image.data, image.timestamp);//新图像来了的回调函数
 	}
 }
 
@@ -129,7 +129,7 @@ void LiveSLAMWrapper::newImageCallback(const cv::Mat& img, Timestamp imgTime)
 	// need to initialize
 	if(!isInitialized)
 	{
-		monoOdometry->randomInit(grayImg.data, imgTime.toSec(), 1);//
+		monoOdometry->randomInit(grayImg.data, imgTime.toSec(), 1);//随机初始化一张图片
 		isInitialized = true;
 	}
 	else if(isInitialized && monoOdometry != nullptr)

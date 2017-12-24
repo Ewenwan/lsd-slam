@@ -67,7 +67,7 @@ void KeyFrameGraphDisplay::draw()
 		printf("Flushing Pointcloud to %s!\n", (ros::package::getPath("lsd_slam_viewer")+"/pc_tmp.ply").c_str());
 		std::ofstream f((ros::package::getPath("lsd_slam_viewer")+"/pc_tmp.ply").c_str());//open an file f named pc_tmp.ply
 		int numpts = 0;
-		for(unsigned int i=0;i<keyframes.size();i++)
+		for(unsigned int i=0;i<keyframes.size();i++)//一帧一帧地写
 		{
 			if((int)i > cutFirstNKf)//cut 5 first KeyFrame
 				numpts += keyframes[i]->flushPC(&f);

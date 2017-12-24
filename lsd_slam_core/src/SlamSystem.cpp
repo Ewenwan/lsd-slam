@@ -867,7 +867,7 @@ void SlamSystem::randomInit(uchar* image, double timeStamp, int id)
 	currentKeyFrameMutex.lock();
 
 	currentKeyFrame.reset(new Frame(id, width, height, K, timeStamp, image));
-	map->initializeRandomly(currentKeyFrame.get());
+	map->initializeRandomly(currentKeyFrame.get());//直接把第一帧设为当前关键帧
 	keyFrameGraph->addFrame(currentKeyFrame.get());
 
 	currentKeyFrameMutex.unlock();

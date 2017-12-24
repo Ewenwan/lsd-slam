@@ -21,6 +21,8 @@
 #include "ROSOutput3DWrapper.h"
 #include "util/SophusUtil.h"
 #include <ros/ros.h>
+#include <cstring>
+#include <boost/thread/shared_mutex.hpp>
 #include "util/settings.h"
 
 
@@ -33,6 +35,7 @@
 #include "sophus/sim3.hpp"
 #include "geometry_msgs/PoseStamped.h"
 #include "GlobalMapping/g2oTypeSim3Sophus.h"
+#include "../../../../lsd_slam_viewer/msg_gen/cpp/include/lsd_slam_viewer/keyframeMsg.h"
 
 namespace lsd_slam
 {
@@ -59,7 +62,7 @@ ROSOutput3DWrapper::ROSOutput3DWrapper(int width, int height)
 	pose_publisher = nh_.advertise<geometry_msgs::PoseStamped>(pose_channel,1);
 
 
-	publishLvl=0;
+	publishLvl=0;//0是分辨率最大的一层
 }
 
 ROSOutput3DWrapper::~ROSOutput3DWrapper()
@@ -78,7 +81,7 @@ void ROSOutput3DWrapper::publishKeyframe(Frame* f)
 	fMsg.time = f->timestamp();
 	fMsg.isKeyframe = true;
 
-	int w = f->width(publishLvl);
+	int w = f->width(publishLvl);//publishLvl=0; 0是分辨率最大的一层
 	int h = f->height(publishLvl);
 
 	memcpy(fMsg.camToWorld.data(),f->getScaledCamToWorld().cast<float>().data(),sizeof(float)*7);
@@ -98,7 +101,7 @@ void ROSOutput3DWrapper::publishKeyframe(Frame* f)
 	fMsg.pointcloud.resize(w*h*sizeof(InputPointDense));
 
 	InputPointDense* pc = (InputPointDense*)fMsg.pointcloud.data();
-    //关键真有点云信息
+    //关键真有点云信息,指针指过来
 
 	const float* idepth = f->idepth(publishLvl);
 	const float* idepthVar = f->idepthVar(publishLvl);
