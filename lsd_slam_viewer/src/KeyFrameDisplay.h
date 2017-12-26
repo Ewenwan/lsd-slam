@@ -33,6 +33,8 @@
 #include <fstream>
 #include <opencv2/core/types_c.h>
 
+#define gridUnit 0.02
+
 struct MyVertex
 {
 	float point[3];

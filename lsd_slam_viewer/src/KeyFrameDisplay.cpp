@@ -197,8 +197,16 @@ void KeyFrameDisplay::refreshPC()
 			}
 
 			tmpBuffer[vertexBufferNumPoints].point[0] = (x*fxi + cxi) * depth;
-			tmpBuffer[vertexBufferNumPoints].point[1] = (y*fyi + cyi) * depth;
+
+            if( (y*fyi + cyi) * depth < 0)
+                continue;
+            else
+                tmpBuffer[vertexBufferNumPoints].point[1] = (y*fyi + cyi) * depth;
+			//tmpBuffer[vertexBufferNumPoints].point[1] = (y*fyi + cyi) * depth;
 			tmpBuffer[vertexBufferNumPoints].point[2] = depth;
+
+            //直接制作山歌地图
+
 
 			tmpBuffer[vertexBufferNumPoints].color[3] = 100;
 			tmpBuffer[vertexBufferNumPoints].color[2] = originalInput[x+y*width].color[0];

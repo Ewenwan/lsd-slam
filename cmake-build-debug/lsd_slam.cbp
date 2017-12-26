@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="lsd_slam"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="lsd_slam">
+				<Option output="/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/lsd_slam" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.8"/>
+					<Add directory="/usr/include/c++/4.8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 lsd_slam"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="lsd_slam/fast">
+				<Option output="/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/lsd_slam" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/4.8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.8"/>
+					<Add directory="/usr/include/c++/4.8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 lsd_slam/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/cfg/cpp/lsd_slam_core/LSDDebugParamsConfig.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/cfg/cpp/lsd_slam_core/LSDParamsConfig.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DataStructures/Frame.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DataStructures/Frame.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DataStructures/FrameMemory.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DataStructures/FrameMemory.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DataStructures/FramePoseStruct.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DataStructures/FramePoseStruct.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DepthEstimation/DepthMap.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DepthEstimation/DepthMap.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DepthEstimation/DepthMapPixelHypothesis.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/DepthEstimation/DepthMapPixelHypothesis.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/GlobalMapping/FabMap.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/GlobalMapping/FabMap.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/GlobalMapping/KeyFrameGraph.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/GlobalMapping/KeyFrameGraph.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/GlobalMapping/TrackableKeyFrameSearch.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/GlobalMapping/TrackableKeyFrameSearch.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/GlobalMapping/g2oTypeSim3Sophus.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/GlobalMapping/g2oTypeSim3Sophus.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/ImageDisplay.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/InputImageStream.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/NotifyBuffer.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/OpenCV/ImageDisplay_OpenCV.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/Output3DWrapper.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/ROS/ROSImageStreamThread.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/ROS/ROSImageStreamThread.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/ROS/ROSOutput3DWrapper.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/ROS/ROSOutput3DWrapper.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/ROS/rosReconfigure.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/Timestamp.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/Timestamp.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/IOWrapper/TimestampedObject.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/LiveSLAMWrapper.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/LiveSLAMWrapper.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/SlamSystem.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/SlamSystem.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/Tracking/LGSX.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/Tracking/Relocalizer.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/Tracking/Relocalizer.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/Tracking/SE3Tracker.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/Tracking/SE3Tracker.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/Tracking/Sim3Tracker.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/Tracking/Sim3Tracker.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/Tracking/TrackingReference.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/Tracking/TrackingReference.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/main_live_odometry.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/main_on_images.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/EigenCoreInclude.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/IndexThreadReduce.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/SophusUtil.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/SophusUtil.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/Undistorter.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/Undistorter.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/globalFuncs.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/globalFuncs.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/settings.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/src/util/settings.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/rxso3.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/se2.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/se3.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/sim3.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/so2.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/so3.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/sophus.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/test_rxso3.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/test_se2.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/test_se3.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/test_sim3.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/test_so2.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/test_so3.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/Sophus/sophus/tests.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/openFabMap/include/openfabmap.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/openFabMap/samples/openFABMAPcli.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/openFabMap/src/BOWMSCTrainer.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/openFabMap/src/ChowLiuTree.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_core/thirdparty/openFabMap/src/FabMap.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/cfg/cpp/lsd_slam_viewer/LSDSLAMViewerParamsConfig.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/msg_gen/cpp/include/lsd_slam_viewer/keyframeGraphMsg.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/msg_gen/cpp/include/lsd_slam_viewer/keyframeMsg.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/KeyFrameDisplay.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/KeyFrameDisplay.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/KeyFrameGraphDisplay.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/KeyFrameGraphDisplay.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/PointCloudViewer.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/PointCloudViewer.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/main_stitchVideos.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/main_viewer.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/main_viewer.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/settings.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/src/settings.h">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/rxso3.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/se2.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/se3.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/sim3.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/so2.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/so3.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/sophus.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/test_rxso3.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/test_se2.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/test_se3.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/test_sim3.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/test_so2.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/test_so3.cpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/lsd_slam_viewer/thirdparty/Sophus/sophus/tests.hpp">
+			<Option target="lsd_slam"/>
+		</Unit>
+		<Unit filename="/home/wzq/rosbuild_ws/package_dir/lsd-slam/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

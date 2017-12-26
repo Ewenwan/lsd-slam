@@ -278,15 +278,15 @@ void PointCloudViewer::draw()
         
         
         
-		currentCamDisplay->drawCam(2*lineTesselation, 0);
+		currentCamDisplay->drawCam(2*lineTesselation, 0);//currentCam画小电视
         last_frame_id = currentCamDisplay->id;
     }
 
 	if(showCurrentPointcloud)
-		currentCamDisplay->drawPC(pointTesselation, 1);
+		currentCamDisplay->drawPC(pointTesselation, 1);//
 
 
-	graphDisplay->draw();
+	graphDisplay->draw();//画关键帧的点云
 
 
 	glPopMatrix();
