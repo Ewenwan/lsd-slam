@@ -1,3 +1,0 @@
-/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/wzq/rosbuild_ws/package_dir/lsd-slam/cmake-build-debug/CMakeFiles/lsd_slam.dir
