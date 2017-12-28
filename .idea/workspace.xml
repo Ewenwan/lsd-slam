@@ -44,18 +44,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d3e892d4-d77b-4434-92e8-8004f16394e4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/wzq.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/lsd-slam.iml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/.kdev4/lsd-slam.kdev4" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.qglviewer.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.qglviewer1.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -103,7 +91,7 @@
               <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
                 <state split_layout="SPLIT">
                   <first_editor relative-caret-position="432">
-                    <caret line="24" column="36" lean-forward="false" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+                    <caret line="24" column="37" lean-forward="true" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
                     <folding />
                   </first_editor>
                   <second_editor />
@@ -250,7 +238,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="OCFindUsagesOptions" text="false" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="992" />
     <option name="y" value="24" />
     <option name="width" value="927" />
@@ -384,7 +372,7 @@
       <workItem from="1514288234707" duration="11642000" />
       <workItem from="1514341482161" duration="329000" />
       <workItem from="1514341819116" duration="5000000" />
-      <workItem from="1514347116390" duration="17977000" />
+      <workItem from="1514347116390" duration="18034000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <created>1513864565305</created>
@@ -404,7 +392,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72702000" />
+    <option name="totallyTimeSpent" value="72759000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -416,7 +404,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1204" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="1204" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10171366" sideWeight="0.4967442" order="0" side_tool="false" content_ui="combo" />
@@ -835,7 +823,7 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="432">
-            <caret line="24" column="36" lean-forward="false" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+            <caret line="24" column="37" lean-forward="true" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
             <folding />
           </first_editor>
           <second_editor />
