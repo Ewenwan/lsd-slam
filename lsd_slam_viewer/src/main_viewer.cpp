@@ -133,7 +133,7 @@ void rosFileLoop( int argc, char** argv )
 int main( int argc, char** argv )
 {
 
-
+    glutInit(&argc, argv);
 	printf("Started QApplication thread\n");
 	// Read command lines arguments.
 	QApplication application(argc,argv);//QApplication 类管理图形用户界面应用程序的控制流和主要设置
@@ -149,8 +149,8 @@ int main( int argc, char** argv )
 
 	// Instantiate the viewer.
 	viewer = new PointCloudViewer();
-    
-   
+
+
 
 	#if QT_VERSION < 0x040000
 		// Set the viewer as the application main widget.
@@ -158,7 +158,7 @@ int main( int argc, char** argv )
 	#else
 		viewer->setWindowTitle("VSLAM PointCloud");
 	#endif
-    
+
 
 	// Make the viewer window visible on screen.
 	viewer->show();//show the "VSLAM Robot PointCloud Viewer" window

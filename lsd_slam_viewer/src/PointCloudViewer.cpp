@@ -45,6 +45,7 @@
 #include <math.h>
 #include <stdlib.h> // RAND_MAX
 #include "main_viewer.h"
+#include "../../../../../../../usr/include/GL/gl.h"
 
 
 using namespace qglviewer;
@@ -63,6 +64,10 @@ PointCloudViewer::PointCloudViewer()
 	setPathKey(Qt::Key_7,7);
 	setPathKey(Qt::Key_8,8);
 	setPathKey(Qt::Key_9,9);
+
+    last_frame_id = 0;
+//    key_frame_size = 0;
+//    last_key_frame_size = 0;
 
 
 	currentCamDisplay = 0;
@@ -149,7 +154,11 @@ void PointCloudViewer::addFrameMsg(lsd_slam_viewer::keyframeMsgConstPtr msg)
 		lastCamID = msg->id;
 	}
 	else//是关键帧
-		graphDisplay->addMsg(msg);//添加关键真的KeyFrameDisplay信息
+    {
+        graphDisplay->addMsg(msg);//添加关键真的KeyFrameDisplay信息
+        //key_frame_size++;
+    }
+
 
 	meddleMutex.unlock();
 }
@@ -259,6 +268,7 @@ void PointCloudViewer::draw()
         {
             printf("This PC frame is %d\n",currentCamDisplay->id);
             Sophus::Matrix4f POSE = currentCamDisplay->camToWorld.matrix();
+
             //std::cout << "POSE is \n\n"<<  POSE.matrix() << "\n\n";
             /*
             Sophus::Matrix3f Rotation = POSE.rotationMatrix();
@@ -286,7 +296,12 @@ void PointCloudViewer::draw()
 		currentCamDisplay->drawPC(pointTesselation, 1);//
 
 
-	graphDisplay->draw();//画关键帧的点云
+    //if(key_frame_size > last_key_frame_size )
+    //{
+    graphDisplay->draw();//画关键帧的点云
+        //last_key_frame_size = key_frame_size;
+    //}
+
 
 
 	glPopMatrix();
@@ -481,42 +496,108 @@ void RobotViewer::init()
 {
     restoreStateFromFile();
     glDisable(GL_LIGHTING);
-    nbPart_ = 2000;
-    particle_ = new Particle[nbPart_];
+    //setAxisIsDrawn();
+    //nbPart_ = 2000;
+    //particle_ = new Particle[nbPart_];
     glPointSize(8.0);
-    setGridIsDrawn();
+    //setGridIsDrawn();
+    //drawGrid(2,10);
     //help();
     //setAnimationPeriod(30);//设置频率，这个很重要，后期需要调整
     startAnimation();
-    printf("Init OK!\n");
 }
+
+// 将立方体的八个顶点保存到一个数组里面
+
+static const float vertex_list[][3] =
+{   //upper 4 point
+    0, 0,gridUnit,
+    gridUnit, 0, gridUnit,
+    gridUnit, 0, 0,
+    0, 0, 0,
+
+        //down 4 point
+    0, 0.1,gridUnit,
+    gridUnit, 0.1, gridUnit,
+    gridUnit, 0.1, 0,
+    0, 0.1, 0,
+
+};
+
+// 将要使用的顶点的序号保存到一个数组里面
+
+static const GLint index_list[][4] =
+{
+    {4,5,6,7},//upper
+    {0,1,2,3},//down
+    {0,1,5,4},//front
+    {3,2,6,7},//back
+    {0,3,7,4},//left
+    {1,2,6,5},//right
+};
 
 void RobotViewer::draw() 
 {
-        if(viewer->currentCamDisplay->id > last_frame_id )
+
+
+	glColor3ub(0 ,255 ,127);//green
+	//glRectf(0,0,1,1);
+
+    int i=0,j=0;
+
+    glBegin(GL_QUADS);
+        for(i=0; i<6; ++i) // 6个面
         {
-         
-            robot_pose.push_back(viewer->robot_pose);
-            Robot_pose = viewer->robot_pose;
-                
-            //cout << "This Robot in\n\n"<< robot_pose << "\n\n";
-            cout << "robot_pose.size() = \n\n"<< robot_pose.size() << "\n\n";
-            
-            glColor3f(1,0,0);
-            glPointSize(4.0);
-            //glLineWidth(4);
-            glBegin(GL_POINTS);//GL_POINTS  GL_LINES
-                for(unsigned int i = 0 ; i < robot_pose.size() ; i++ )
-                {
-                    //Sophus::Vector4f rp = *robot_pose[i];
-                    glVertex3f(robot_pose[i][0],robot_pose[i][1],robot_pose[i][2]);
-                }
-                glVertex3f(Robot_pose[0],Robot_pose[1],Robot_pose[2]);
-            glEnd();
-            glFlush();
-            
-            last_frame_id = viewer->currentCamDisplay->id;
+            glColor3ub((i+1)*30 ,0 ,0);
+            for(j=0; j<4; ++j) // 每个面 4个顶点
+            {
+                glVertex3fv(vertex_list[index_list[i][j]]);
+            }
         }
+    glEnd();
+
+    glPushMatrix();
+
+
+        glTranslatef (0.1, 0.1, 0.1);
+        glRotatef ((GLfloat) 0, 0.0, 0.0, 0.0);
+
+        glColor3f(0.8,0.4,0.5);
+
+
+        glScalef (1, 1, 1);
+        glutSolidCube(0.2);
+
+
+
+    glPopMatrix();
+
+
+    if(viewer->currentCamDisplay->id > last_frame_id )
+    {
+
+        robot_pose.push_back(viewer->robot_pose);
+        Robot_pose = viewer->robot_pose;
+
+        //cout << "This Robot in\n\n"<< robot_pose << "\n\n";
+        cout << "robot_pose.size() = \n\n"<< robot_pose.size() << "\n\n";
+
+
+        glColor3f(1,0,0);
+        glPointSize(4.0);
+        //glLineWidth(4);
+        glBegin(GL_POINTS);//GL_POINTS  GL_LINES
+            for(unsigned int i = 0 ; i < robot_pose.size() ; i++ )
+            {
+                //Sophus::Vector4f rp = *robot_pose[i];
+                glVertex3f(robot_pose[i][0],robot_pose[i][1],robot_pose[i][2]);
+            }
+            glVertex3f(Robot_pose[0],Robot_pose[1],Robot_pose[2]);
+        glEnd();
+        glFlush();
+
+        last_frame_id = viewer->currentCamDisplay->id;
+    }
 
     
 }

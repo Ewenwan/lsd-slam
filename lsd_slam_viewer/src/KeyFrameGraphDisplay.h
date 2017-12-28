@@ -73,6 +73,7 @@ private:
 	std::vector<GraphConstraintPt> constraints;
 
 	boost::mutex dataMutex;
+    int last_size;
 
 };
 

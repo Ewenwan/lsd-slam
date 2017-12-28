@@ -31,6 +31,7 @@
 #include "opencv2/opencv.hpp"
 
 #include "ros/package.h"
+#include "../../../../../../../usr/include/GL/glext.h"
 
 KeyFrameDisplay::KeyFrameDisplay()
 {
@@ -46,6 +47,7 @@ KeyFrameDisplay::KeyFrameDisplay()
 	my_scaledTH = my_absTH = 0;
 
 	totalPoints = displayedPoints = 0;
+    robot_map = new MAP;
 }
 
 
@@ -196,16 +198,24 @@ void KeyFrameDisplay::refreshPC()
 					continue;
 			}
 
+
 			tmpBuffer[vertexBufferNumPoints].point[0] = (x*fxi + cxi) * depth;
 
-            if( (y*fyi + cyi) * depth < 0)
+            if((y*fyi + cyi) * depth < 0)
                 continue;
             else
                 tmpBuffer[vertexBufferNumPoints].point[1] = (y*fyi + cyi) * depth;
-			//tmpBuffer[vertexBufferNumPoints].point[1] = (y*fyi + cyi) * depth;
+
 			tmpBuffer[vertexBufferNumPoints].point[2] = depth;
 
+
             //直接制作山歌地图
+            if(robot_map->vertex_map.find(tmpBuffer[vertexBufferNumPoints]) == robot_map->vertex_map.end())
+            {
+                robot_map->vertex_map.insert(tmpBuffer[vertexBufferNumPoints]);//add
+                robot_map->gridInsertNode((int)(tmpBuffer[vertexBufferNumPoints].point[0]/gridUnit),
+                                          (int)(tmpBuffer[vertexBufferNumPoints].point[2]/gridUnit));
+            }
 
 
 			tmpBuffer[vertexBufferNumPoints].color[3] = 100;
@@ -363,6 +373,7 @@ int KeyFrameDisplay::flushPC(std::ofstream* f)//用于按键保存点云到磁�
 
 void KeyFrameDisplay::drawPC(float pointSize, float alpha) {
     refreshPC();
+    robot_map->PrintMap();
 
     if (!vertexBufferIdValid) {
         return;

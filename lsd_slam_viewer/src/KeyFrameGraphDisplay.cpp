@@ -31,6 +31,7 @@ KeyFrameGraphDisplay::KeyFrameGraphDisplay()
 {
 	flushPointcloud = false;
 	printNumbers = false;
+    last_size = 0 ;
 }
 
 KeyFrameGraphDisplay::~KeyFrameGraphDisplay()
@@ -56,8 +57,17 @@ void KeyFrameGraphDisplay::draw()
             //keyframes[keyframes.size()-1]->drawCam(lineTesselation, color);
         }
     
-		if((showKFPointclouds && (int)i > cutFirstNKf) || i == keyframes.size()-1)
-			keyframes[i]->drawPC(pointTesselation, 1);
+		if( (showKFPointclouds && (int)i > cutFirstNKf) || i == keyframes.size()-1 )
+        {
+            //if(i > last_size)
+            {
+                keyframes[i]->drawPC(pointTesselation, 1);
+                //last_size = i;
+                //printf("showKFPointclouds\n");
+            }
+
+        }
+
 	}
 
 

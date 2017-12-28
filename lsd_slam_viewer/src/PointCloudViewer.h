@@ -31,7 +31,7 @@
 #include "lsd_slam_viewer/keyframeGraphMsg.h"
 #include "sophus/sim3.hpp"
 #include "QGLViewer/keyFrameInterpolator.h"
-
+#include <GL/glut.h>
 class QApplication;
 
 class KeyFrameGraphDisplay;
@@ -39,7 +39,12 @@ class CameraDisplay;
 class KeyFrameDisplay;
 class RobotViewer;
 
+
+
 #include "settings.h"
+
+
+#define gridUnit 2
 
 class AnimationObject
 {
@@ -176,6 +181,9 @@ protected :
 private:
     
     int last_frame_id;
+//    int key_frame_size;
+//    int last_key_frame_size;
+
     Sophus::Vector4f robot_pose;
     Sophus::Vector4f robot_origin;
     
@@ -255,8 +263,8 @@ protected:
   virtual QString helpString() const;
 
 private:
-  int nbPart_;
-  Particle *particle_;
+  //int nbPart_;
+  //Particle *particle_;
   std::vector<Sophus::Vector4f> robot_pose;
   int last_frame_id = 0;
   Sophus::Vector4f Robot_pose;
