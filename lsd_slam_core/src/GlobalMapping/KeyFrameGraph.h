@@ -27,6 +27,13 @@
 #include <g2o/core/sparse_optimizer.h>
 #include "util/SophusUtil.h"
 #include "deque"
+#include "../../../../../../../../usr/include/boost/thread/pthread/shared_mutex.hpp"
+#include "../../../../../../../../usr/include/c++/4.8/string"
+#include "../../../../../../../../usr/include/c++/4.8/bits/unordered_map.h"
+#include "../../../../../../../../usr/include/boost/shared_ptr.hpp"
+#include "../../../../../../../../usr/include/boost/smart_ptr/shared_ptr.hpp"
+#include "../../../../../../../../usr/include/boost/functional/hash/hash.hpp"
+#include "../../../../../../../../usr/include/boost/functional/hash.hpp"
 
 
 namespace lsd_slam

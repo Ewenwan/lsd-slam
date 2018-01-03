@@ -46,6 +46,9 @@
 #include <stdlib.h> // RAND_MAX
 #include "main_viewer.h"
 #include "../../../../../../../usr/include/GL/gl.h"
+#include "../../../../../../../usr/include/c++/4.8/cstdio"
+#include "../../../../../../../usr/include/GL/glut.h"
+#include "../../../../../../../usr/include/c++/4.8/map"
 
 
 using namespace qglviewer;
@@ -84,6 +87,8 @@ PointCloudViewer::PointCloudViewer()
 	customAnimationEnabled = false;
 
 	setSnapshotFormat(QString("PNG"));
+
+    robot_map = new MAP;
 
 	reset();//重置
 }
@@ -179,7 +184,8 @@ void PointCloudViewer::init()
 {
     robot_pose << 0,0,0,1;
     robot_origin << 0,0,0,1;
-    
+
+    restoreStateFromFile();
     cout.setf(ios::fixed);
 	setAnimationPeriod(30);//设置频率，这个很重要，后期需要调整
 	startAnimation();
@@ -268,23 +274,10 @@ void PointCloudViewer::draw()
         {
             printf("This PC frame is %d\n",currentCamDisplay->id);
             POSE = currentCamDisplay->camToWorld.matrix();
-
-            //std::cout << "POSE is \n\n"<<  POSE.matrix() << "\n\n";
-            /*
-            Sophus::Matrix3f Rotation = POSE.rotationMatrix();
-            //cout << "Rotation is \n\n"<< Rotation << "\n\n";
-            
-            Sophus::Vector3f Translation = POSE.translation();
-            //cout << "Translation is \n\n"<< Translation << "\n\n";
-            
-            pose_pi *= Rotation.transpose();
-            
-            pose_sigma += pose_pi*Translation;*/
-
-            
             robot_pose = POSE*robot_origin;
             
             cout << setprecision(8) << "Now This Robot in\n\n"<< robot_pose << "\n\n";
+            //robot_map->PrintMap();
         }
         
         
@@ -294,14 +287,14 @@ void PointCloudViewer::draw()
     }
 
 	if(showCurrentPointcloud)
-		currentCamDisplay->drawPC(pointTesselation, 1);//
+		currentCamDisplay->drawPC(pointTesselation, 1);//实际没多大用
 
 
-    //if(key_frame_size > last_key_frame_size )
-    //{
+
     graphDisplay->draw();//画关键帧的点云
-        //last_key_frame_size = key_frame_size;
-    //}
+
+    //if( currentCamDisplay->id > 5000 )
+
 
 
 
@@ -537,16 +530,33 @@ void RobotViewer::draw()
         last_frame_id = viewer->currentCamDisplay->id;
     }
 
-    glColor3ub(0 ,255 ,127);//green
+    //glColor3ub(30, 144, 255);//green
+
+    map<node, int>::iterator itr;
+    itr = viewer->robot_map->g_map.begin();
+
+    while(itr != viewer->robot_map->g_map.end())
+    {
+        glPushMatrix();
+            glTranslatef(gridUnit/2+gridUnit*itr->first.x, gridUnit, gridUnit/2+gridUnit*itr->first.y);
+            //glRotatef((GLfloat) 0, 0.0, 0.0, 0.0);
+            if(itr->second > 100 )
+                glColor3ub(30, 144, 255);//green
+            else
+                glColor3ub(0,238,118);
+            glScalef (1, 2, 1);
+            glutSolidCube(gridUnit);
+        glPopMatrix();
+        itr++;
+    }
+    //gridUnit
     glPushMatrix();
         glMultMatrixf((GLfloat*)POSE.data());
-        glPushMatrix();
-            glTranslatef(0.1, 0.1, 0.2);
-            //glRotatef((GLfloat) 0, 0.0, 0.0, 0.0);
-            glColor3f(0.8,0.4,0.5);
-            glScalef (1, 1, 2);
-            glutSolidCube(0.2);
-        glPopMatrix();
+        glTranslatef(0.1, -0.3, 0.2);
+        //glRotatef((GLfloat) 0, 0.0, 0.0, 0.0);
+        glColor3f(0.8,0.4,0.5);
+        glScalef (1, 1, 2);
+        glutSolidCube(0.2);
     glPopMatrix();
 }
 

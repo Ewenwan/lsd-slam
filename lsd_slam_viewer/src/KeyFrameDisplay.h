@@ -32,41 +32,19 @@
 #include "../../../../../../../usr/include/c++/4.8/iostream"
 #include "../../../../../../../usr/include/c++/4.8/ostream"
 #include "../../../../../../../usr/include/c++/4.8/map"
+#include "PointCloudViewer.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <map>
-#include <set>
+
 #include <opencv2/core/types_c.h>
-
-using namespace std;
-
-
-#define gridUnit 0.02
-
-struct node
-{
-    int x;
-    int y;
-    bool operator < (const node &compNode) const
-    {
-        return (this->x < compNode.x || (this->x == compNode.x && this->y < compNode.y));
-    }
-};
 
 
 struct MyVertex
 {
     float point[3];
     uchar color[4];
-    bool operator < (const MyVertex &compVertex) const
-    {
-        return (         this->point[0] <  compVertex.point[0]
-                     || (this->point[0] == compVertex.point[0] && this->point[1] <  compVertex.point[1])
-                     || (this->point[0] == compVertex.point[0]
-                         && this->point[1] == compVertex.point[1] && this->point[2] < compVertex.point[2] )
-        );
-    }
+
 };
 
 struct InputPointDense
@@ -76,73 +54,7 @@ struct InputPointDense
     uchar color[4];
 };
 
-class MAP
-{
-    //friend ostream &operator<< (ostream&,const node&);
-public:
-    MAP()
-    {
-        error = 10000;
-    }
-    void gridInsertNode(int x, int y )
-    {
-        node temp_n;
-        temp_n.x = x;
-        temp_n.y = y;
-        if(g_map.find(temp_n) == g_map.end())//no this node
-        {
-            g_map[temp_n] = 1;//add node
-        }
-        else//already have this node
-        {
-            g_map[temp_n]++;//point cloud num ++
-        }
-    }
 
-
-    map<node, int> g_map;
-    set<MyVertex> vertex_map;
-
-    int error;
-
-    int  &operator ()(int x, int y)
-    {
-        node temp_n;
-        temp_n.x = x;
-        temp_n.y = y;
-
-        if (g_map.find(temp_n) == g_map.end())//no this node
-        {
-            cout << "no this node"<<endl;
-            return error;
-        }
-
-        //cout << "x=" << x << " y=" << y << " num=" << r_map[temp_n] << endl;
-        return g_map[temp_n];
-    }
-    void PrintMap()
-    {
-        map<node, int>::iterator itr;
-        itr = g_map.begin();
-        int i = 0;
-        while(itr != g_map.end())
-        {
-            cout << "node "<< i  <<", x= "<< itr->first.x
-                    << ", y= " << itr->first.y
-                    << ", point cloud =" << itr->second
-                    << endl;
-            itr++;
-            i++;
-        }
-
-    }
-};
-
-//ostream &operator<< (ostream &out,const node &n)
-//{
-//    out << "x=" << n.x << " y=" <<n.y ;
-//    return  out;
-//}
 
 
 
@@ -175,7 +87,10 @@ public:
 	// camera pose
 	// may be updated by kf-graph.
 	Sophus::Sim3f camToWorld;
-  
+    Sophus::Vector4f pc_current;
+    Sophus::Vector4f pc_global;
+
+
     
 
 private:
@@ -203,6 +118,6 @@ private:
 	bool vertexBufferIdValid;	// true if the vertixBufferID is valid (doesnt mean the data in there is still valid)
 	bool glBuffersValid;		// true if the vertexBufferID contains valid data
 
-    MAP* robot_map;
+
 };
 

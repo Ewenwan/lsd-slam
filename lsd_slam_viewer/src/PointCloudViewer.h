@@ -32,19 +32,116 @@
 #include "sophus/sim3.hpp"
 #include "QGLViewer/keyFrameInterpolator.h"
 #include <GL/glut.h>
+#include <map>
+#include <set>
+
 class QApplication;
 
 class KeyFrameGraphDisplay;
 class CameraDisplay;
 class KeyFrameDisplay;
 class RobotViewer;
+class PointCloudViewer;
 
 
 
 #include "settings.h"
 
+#define gridUnit 0.02
+using namespace std;
 
-#define gridUnit 2
+struct node
+{
+    int x;
+    int y;
+    bool operator < (const node &compNode) const
+    {
+        return (this->x < compNode.x || (this->x == compNode.x && this->y < compNode.y));
+    }
+};
+
+struct globalVertex
+{
+    float x;
+    float y;
+    float z;
+    bool operator < (const globalVertex &compVertex) const
+    {
+        return (this->x <  compVertex.x
+                || (this->x == compVertex.x && this->y <  compVertex.y)
+                || (this->x == compVertex.x && this->y == compVertex.y && this->z < compVertex.z )
+        );
+    }
+};
+
+class MAP
+{
+    //friend ostream &operator<< (ostream&,const node&);
+    friend PointCloudViewer;
+public:
+    MAP()
+    {
+        error = 10000;
+    }
+    void gridInsertNode(int x, int y)
+    {
+        node temp_n;
+        temp_n.x = x;
+        temp_n.y = y;
+        if(g_map.find(temp_n) == g_map.end())//no this node
+        {
+            g_map[temp_n] = 1;//add node
+        }
+        else//already have this node
+        {
+            g_map[temp_n]++;//point cloud num ++
+        }
+    }
+
+
+    map<node, int> g_map;
+    set<globalVertex> vertex_map;
+
+    int error;
+
+    int  &operator ()(int x, int y)
+    {
+        node temp_n;
+        temp_n.x = x;
+        temp_n.y = y;
+
+        if (g_map.find(temp_n) == g_map.end())//no this node
+        {
+            cout << "no this node"<<endl;
+            return error;
+        }
+
+        //cout << "x=" << x << " y=" << y << " num=" << r_map[temp_n] << endl;
+        return g_map[temp_n];
+    }
+    void PrintMap()
+    {
+        map<node, int>::iterator itr;
+        itr = g_map.begin();
+        int i = 0;
+        while(itr != g_map.end())
+        {
+            cout << "node "<< i  <<", x= "<< itr->first.x
+                 << ", z= " << itr->first.y
+                 << ", point cloud =" << itr->second
+                 << endl;
+            itr++;
+            i++;
+        }
+
+    }
+};
+
+//ostream &operator<< (ostream &out,const node &n)
+//{
+//    out << "x=" << n.x << " y=" <<n.y ;
+//    return  out;
+//}
 
 class AnimationObject
 {
@@ -153,7 +250,6 @@ public:
 
 
 
-
 class PointCloudViewer : public QGLViewer
 {
 
@@ -167,6 +263,7 @@ public:
 	void addFrameMsg(lsd_slam_viewer::keyframeMsgConstPtr msg);
 	void addGraphMsg(lsd_slam_viewer::keyframeGraphMsgConstPtr msg);
 
+    MAP* robot_map;
 
 protected :
 	virtual void draw();
@@ -179,6 +276,7 @@ protected :
 
 
 private:
+
     
     int last_frame_id;
 //    int key_frame_size;

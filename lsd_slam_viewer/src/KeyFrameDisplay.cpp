@@ -20,7 +20,10 @@
 
 #define GL_GLEXT_PROTOTYPES 1
 
+#include "main_viewer.h"
 #include "KeyFrameDisplay.h"
+#include "KeyFrameGraphDisplay.h"
+
 #include <stdio.h>
 #include "settings.h"
 
@@ -32,6 +35,8 @@
 
 #include "ros/package.h"
 #include "../../../../../../../usr/include/GL/glext.h"
+#include "../../../../../../../usr/include/c++/4.8/cstring"
+
 
 KeyFrameDisplay::KeyFrameDisplay()
 {
@@ -47,7 +52,7 @@ KeyFrameDisplay::KeyFrameDisplay()
 	my_scaledTH = my_absTH = 0;
 
 	totalPoints = displayedPoints = 0;
-    robot_map = new MAP;
+
 }
 
 
@@ -208,13 +213,24 @@ void KeyFrameDisplay::refreshPC()
 
 			tmpBuffer[vertexBufferNumPoints].point[2] = depth;
 
+            pc_current <<   tmpBuffer[vertexBufferNumPoints].point[0],
+                            tmpBuffer[vertexBufferNumPoints].point[1],
+                            tmpBuffer[vertexBufferNumPoints].point[2],
+                            1;
+
+            pc_global = camToWorld.matrix()*pc_current;
+
+            globalVertex tempgv;
+            tempgv.x =pc_global[0];
+            tempgv.y =pc_global[1];
+            tempgv.z =pc_global[2];
+
 
             //直接制作山歌地图
-            if(robot_map->vertex_map.find(tmpBuffer[vertexBufferNumPoints]) == robot_map->vertex_map.end())
+            if(viewer->robot_map->vertex_map.find(tempgv) == viewer->robot_map->vertex_map.end())
             {
-                robot_map->vertex_map.insert(tmpBuffer[vertexBufferNumPoints]);//add
-                robot_map->gridInsertNode((int)(tmpBuffer[vertexBufferNumPoints].point[0]/gridUnit),
-                                          (int)(tmpBuffer[vertexBufferNumPoints].point[2]/gridUnit));
+                viewer->robot_map->vertex_map.insert(tempgv);//add
+                viewer->robot_map->gridInsertNode((int)(tempgv.x/gridUnit),(int)(tempgv.z/gridUnit));
             }
 
 
@@ -373,7 +389,7 @@ int KeyFrameDisplay::flushPC(std::ofstream* f)//用于按键保存点云到磁�
 
 void KeyFrameDisplay::drawPC(float pointSize, float alpha) {
     refreshPC();
-    robot_map->PrintMap();
+
 
     if (!vertexBufferIdValid) {
         return;

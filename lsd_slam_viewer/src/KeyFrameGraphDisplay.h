@@ -28,7 +28,11 @@
 #include "lsd_slam_viewer/keyframeMsg.h"
 #include "boost/thread.hpp"
 
+
 class KeyFrameDisplay;
+
+
+
 
 
 struct GraphConstraint
