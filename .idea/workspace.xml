@@ -40,15 +40,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d3e892d4-d77b-4434-92e8-8004f16394e4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/lsd_slam_core/src/GlobalMapping/KeyFrameGraph.h" afterPath="$PROJECT_DIR$/lsd_slam_core/src/GlobalMapping/KeyFrameGraph.h" />
-      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.cpp" afterPath="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.cpp" />
-      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.h" afterPath="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.h" />
-      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameGraphDisplay.h" afterPath="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameGraphDisplay.h" />
-      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp" afterPath="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp" />
-      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.h" afterPath="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.h" />
-    </list>
+    <list default="true" id="d3e892d4-d77b-4434-92e8-8004f16394e4" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -134,8 +126,8 @@
           <file leaf-file-name="PointCloudViewer.cpp" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1091">
-                  <caret line="609" column="49" lean-forward="true" selection-start-line="609" selection-start-column="49" selection-end-line="609" selection-end-column="49" />
+                <state relative-caret-position="227">
+                  <caret line="307" column="11" lean-forward="false" selection-start-line="307" selection-start-column="11" selection-end-line="307" selection-end-column="11" />
                   <folding>
                     <element signature="e#7135#7196#0" expanded="false" />
                     <element signature="e#7199#7273#0" expanded="false" />
@@ -389,7 +381,7 @@
       <workItem from="1514530483172" duration="811000" />
       <workItem from="1514531991321" duration="4207000" />
       <workItem from="1514549101374" duration="1842000" />
-      <workItem from="1514976366828" duration="99000" />
+      <workItem from="1514976366828" duration="1471000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <created>1513864565305</created>
@@ -409,7 +401,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="111644000" />
+    <option name="totallyTimeSpent" value="113016000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -431,7 +423,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293023" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14925373" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24093023" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18790698" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12603648" sideWeight="0.5032558" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -833,8 +825,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1091">
-          <caret line="609" column="49" lean-forward="true" selection-start-line="609" selection-start-column="49" selection-end-line="609" selection-end-column="49" />
+        <state relative-caret-position="227">
+          <caret line="307" column="11" lean-forward="false" selection-start-line="307" selection-start-column="11" selection-end-line="307" selection-end-column="11" />
           <folding>
             <element signature="e#7135#7196#0" expanded="false" />
             <element signature="e#7199#7273#0" expanded="false" />
