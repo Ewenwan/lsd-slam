@@ -35,6 +35,7 @@
 #include <map>
 #include <set>
 
+
 class QApplication;
 
 class KeyFrameGraphDisplay;
@@ -43,98 +44,121 @@ class KeyFrameDisplay;
 class RobotViewer;
 class PointCloudViewer;
 
-
-
 #include "settings.h"
+#include "../msg_gen/cpp/include/lsd_slam_viewer/keyframeGraphMsg.h"
+#include "../msg_gen/cpp/include/lsd_slam_viewer/keyframeMsg.h"
 
 #define gridUnit 0.02
 using namespace std;
 
 struct node
 {
-    int x;
-    int y;
-    bool operator < (const node &compNode) const
-    {
-        return (this->x < compNode.x || (this->x == compNode.x && this->y < compNode.y));
-    }
+	int x;
+	int z;
+	bool operator < (const node &compNode) const
+	{
+		return (this->x < compNode.x || (this->x == compNode.x && this->z < compNode.z));
+	}
+	bool operator == (const node &compNode) const
+	{
+		return (this->x == compNode.x &&  this->z == compNode.z);
+	}
+	bool operator != (const node &compNode) const
+	{
+		return (this->x != compNode.x &&  this->z != compNode.z);
+	}
 };
 
 struct globalVertex
 {
-    float x;
-    float y;
-    float z;
-    bool operator < (const globalVertex &compVertex) const
-    {
-        return (this->x <  compVertex.x
-                || (this->x == compVertex.x && this->y <  compVertex.y)
-                || (this->x == compVertex.x && this->y == compVertex.y && this->z < compVertex.z )
-        );
-    }
+	float x;
+	float y;
+	float z;
+	bool operator < (const globalVertex &compVertex) const
+	{
+		return (this->x <  compVertex.x
+				|| (this->x == compVertex.x && this->y <  compVertex.y)
+				|| (this->x == compVertex.x && this->y == compVertex.y && this->z < compVertex.z )
+		);
+	}
 };
 
 class MAP
 {
-    //friend ostream &operator<< (ostream&,const node&);
-    friend PointCloudViewer;
+	//friend ostream &operator<< (ostream&,const node&);
 public:
-    MAP()
-    {
-        error = 10000;
-    }
-    void gridInsertNode(int x, int y)
-    {
-        node temp_n;
-        temp_n.x = x;
-        temp_n.y = y;
-        if(g_map.find(temp_n) == g_map.end())//no this node
-        {
-            g_map[temp_n] = 1;//add node
-        }
-        else//already have this node
-        {
-            g_map[temp_n]++;//point cloud num ++
-        }
-    }
+	MAP()
+	{
+		error = -1;
+	}
+	void gridInsertNode(int x, int z)
+	{
+		node temp_n;
+		temp_n.x = x;
+		temp_n.z = z;
+
+		if(g_map.find(temp_n) == g_map.end())//no this node
+		{
+			g_map[temp_n] = 1;//add node
+		}
+		else//already have this node
+		{
+			g_map[temp_n]++;//point cloud num ++
+		}
+
+	}
 
 
-    map<node, int> g_map;
-    set<globalVertex> vertex_map;
+	map<node, int> g_map;
+	set<globalVertex> vertex_map;
 
-    int error;
+	int error;
 
-    int  &operator ()(int x, int y)
-    {
-        node temp_n;
-        temp_n.x = x;
-        temp_n.y = y;
+	int  &operator ()(int x, int z)
+	{
+		node temp_n;
+		temp_n.x = x;
+		temp_n.z = z;
+		if (g_map.find(temp_n) == g_map.end())//no this node
+		{
+			//cout << "no this node"<<endl;
+			return error;
+		}
 
-        if (g_map.find(temp_n) == g_map.end())//no this node
-        {
-            cout << "no this node"<<endl;
-            return error;
-        }
+		//cout << "x=" << x << " y=" << y << " num=" << r_map[temp_n] << endl;
+		return g_map[temp_n];
+	}
+	void PrintMap()
+	{
+		map<node, int>::iterator itr;
+		itr = g_map.begin();
+		int i = 0;
+		while(itr != g_map.end())
+		{
+			cout << "node " << i  <<", x= "<< itr->first.x
+				 << ", z= " << itr->first.z
+				 << ", point cloud =" << itr->second
+				 << endl;
+			itr++;
+			i++;
+		}
 
-        //cout << "x=" << x << " y=" << y << " num=" << r_map[temp_n] << endl;
-        return g_map[temp_n];
-    }
-    void PrintMap()
-    {
-        map<node, int>::iterator itr;
-        itr = g_map.begin();
-        int i = 0;
-        while(itr != g_map.end())
-        {
-            cout << "node "<< i  <<", x= "<< itr->first.x
-                 << ", z= " << itr->first.y
-                 << ", point cloud =" << itr->second
-                 << endl;
-            itr++;
-            i++;
-        }
+	}
+};
 
-    }
+class Astar {
+
+public:
+	Astar(){
+
+		startPosition = new node;
+		destination   = new node;
+	}
+	~Astar();
+
+	node* startPosition;
+	node* destination;
+
 };
 
 //ostream &operator<< (ostream &out,const node &n)
@@ -201,10 +225,10 @@ public:
 		float x,y,z;
 
 		if(17 != sscanf(s.c_str(),"Animation: %d at %lf (dur %lf) S: %f %f %d %d %d %d %d Frame: %lf %lf %lf %lf %f %f %f %d\n",
-				&isSettings_i, &time, &duration,
-				&scaledTH, &absTH, &showLoopClosures_i, &showKeyframes_i, &showCurrentCam_i, &sparsity, &neighb,
-				&(orient[0]),&(orient[1]),&(orient[2]),&(orient[3]),
-				&x, &y, &z, &isFix_i))
+						&isSettings_i, &time, &duration,
+						&scaledTH, &absTH, &showLoopClosures_i, &showKeyframes_i, &showCurrentCam_i, &sparsity, &neighb,
+						&(orient[0]),&(orient[1]),&(orient[2]),&(orient[3]),
+						&x, &y, &z, &isFix_i))
 			printf("error parsing: %s\n", s.c_str());
 
 		isSettings = isSettings_i;
@@ -220,14 +244,14 @@ public:
 		printf("read: %s\n",toString().c_str());
 	}
 
-    bool operator < (const AnimationObject& other) const
-    {
-        return (time < other.time);
-    }
+	bool operator < (const AnimationObject& other) const
+	{
+		return (time < other.time);
+	}
 
-    std::string toString()
-    {
-    	char buf[1000];
+	std::string toString()
+	{
+		char buf[1000];
 
 		int isSettings_i = isSettings;
 		int showLoopClosures_i = showLoopClosures;
@@ -238,14 +262,14 @@ public:
 		float x,y,z;
 		frame.getPosition(x,y,z);
 
-    	snprintf(buf, 1000, "Animation: %d at %lf (dur %lf) S: %f %f %d %d %d %d %d Frame: %lf %lf %lf %lf %f %f %f %d",
-				isSettings_i, time, duration,
-				scaledTH, absTH, showLoopClosures_i, showKeyframes_i, showCurrentCam_i, sparsity, neighb,
-				frame.orientation()[0],frame.orientation()[1],frame.orientation()[2],frame.orientation()[3],
-				x,y,z, isFix_i);
+		snprintf(buf, 1000, "Animation: %d at %lf (dur %lf) S: %f %f %d %d %d %d %d Frame: %lf %lf %lf %lf %f %f %f %d",
+				 isSettings_i, time, duration,
+				 scaledTH, absTH, showLoopClosures_i, showKeyframes_i, showCurrentCam_i, sparsity, neighb,
+				 frame.orientation()[0],frame.orientation()[1],frame.orientation()[2],frame.orientation()[3],
+				 x,y,z, isFix_i);
 
-    	return buf;
-    }
+		return buf;
+	}
 };
 
 
@@ -253,9 +277,9 @@ public:
 class PointCloudViewer : public QGLViewer
 {
 
-    friend RobotViewer;    
+	friend RobotViewer;
 public:
-    PointCloudViewer();
+	PointCloudViewer();
 	~PointCloudViewer();
 
 	void reset();
@@ -263,7 +287,7 @@ public:
 	void addFrameMsg(lsd_slam_viewer::keyframeMsgConstPtr msg);
 	void addGraphMsg(lsd_slam_viewer::keyframeGraphMsgConstPtr msg);
 
-    MAP* robot_map;
+	MAP* robot_map;
 
 protected :
 	virtual void draw();
@@ -277,15 +301,15 @@ protected :
 
 private:
 
-    
-    int last_frame_id;
+
+	int last_frame_id;
 //    int key_frame_size;
 //    int last_key_frame_size;
 
-    Sophus::Vector4f robot_pose;
-    Sophus::Vector4f robot_origin;
-    Sophus::Matrix4f POSE;
-    
+	Sophus::Vector4f robot_pose;
+	Sophus::Vector4f robot_origin;
+	Sophus::Matrix4f POSE;
+
 	// displays kf-graph
 	KeyFrameGraphDisplay* graphDisplay;
 
@@ -336,38 +360,54 @@ private:
 
 
 	void remakeAnimation();
-    
-    
+
+
 };
 
-
-class Particle {
-public:
-  Particle();
-
-  void init();
-  void draw();
-  void animate();
-
-private:
-  qglviewer::Vec speed_, pos_;
-  int age_, ageMax_;
-};
 
 class RobotViewer : public QGLViewer {
+
+public:
+	RobotViewer(){
+		pathFinder = new Astar;
+	}
+
 protected:
-  virtual void draw();
-  virtual void init();
-  virtual void animate();
-  virtual QString helpString() const;
+	virtual void draw();
+	virtual void init();
+	virtual void animate();
+	virtual void keyPressEvent(QKeyEvent *e);
+	//virtual void keyReleaseEvent(QKeyEvent *e);
+	virtual QString helpString() const;
 
 private:
-  //int nbPart_;
-  //Particle *particle_;
-  Sophus::Matrix4f POSE;
-  std::vector<Sophus::Vector4f> robot_pose;
-  int last_frame_id = 0;
-  Sophus::Vector4f Robot_pose;
-  
+
+	Sophus::Matrix4f POSE;
+	std::vector<Sophus::Vector4f> robot_pose;
+	int last_frame_id = 0;
+	Sophus::Vector4f Robot_pose;
+
+	//Astar
+	Astar* pathFinder;
+
+
+
+
+
 };
 
+class Viewer : public QGLViewer {
+public:
+	Viewer() : wireframe_(false), flatShading_(false){};
+
+protected:
+	virtual void draw();
+	virtual void init();
+	virtual void keyPressEvent(QKeyEvent *e);
+	virtual void mousePressEvent(QMouseEvent *e);
+
+	virtual QString helpString() const;
+
+private:
+	bool wireframe_, flatShading_;
+};

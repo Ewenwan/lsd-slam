@@ -40,7 +40,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d3e892d4-d77b-4434-92e8-8004f16394e4" name="Default" comment="" />
+    <list default="true" id="d3e892d4-d77b-4434-92e8-8004f16394e4" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/.qglviewer.xml" afterPath="$PROJECT_DIR$/.qglviewer.xml" />
+      <change beforePath="$PROJECT_DIR$/.qglviewer1.xml" afterPath="$PROJECT_DIR$/.qglviewer1.xml" />
+      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/CMakeLists.txt" afterPath="$PROJECT_DIR$/lsd_slam_viewer/CMakeLists.txt" />
+      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp" afterPath="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp" />
+      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.h" afterPath="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.h" />
+      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.cpp" afterPath="$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.cpp" />
+      <change beforePath="$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.h" afterPath="$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.h" />
+    </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -58,14 +67,24 @@
     <favorites_list name="lsd_slam" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5928309">
+    <splitter split-orientation="horizontal" split-proportion="0.6467589">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="146">
+          <file leaf-file-name="Frame.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/DataStructures/Frame.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="720">
+                  <caret line="40" column="6" lean-forward="false" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="KeyFrameDisplay.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2016">
-                  <caret line="112" column="22" lean-forward="false" selection-start-line="112" selection-start-column="22" selection-end-line="112" selection-end-column="22" />
+                <state relative-caret-position="261">
+                  <caret line="218" column="30" lean-forward="false" selection-start-line="218" selection-start-column="30" selection-end-line="218" selection-end-column="30" />
                   <folding />
                 </state>
               </provider>
@@ -94,48 +113,49 @@
           <file leaf-file-name="main_viewer.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="342">
-                  <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#813#837#0" expanded="true" />
-                    <element signature="e#4060#4103#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="main_viewer.h" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.h">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="702">
-                  <caret line="39" column="31" lean-forward="false" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="31" />
+                <state relative-caret-position="235">
+                  <caret line="159" column="34" lean-forward="true" selection-start-line="159" selection-start-column="34" selection-end-line="159" selection-end-column="34" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="mechine.ply" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/../../ply/mechine.ply">
-              <provider selected="true" editor-type-id="LargeFileEditor">
-                <state relative-caret-position="220770">
-                  <caret line="12265" column="23" lean-forward="false" selection-start-line="12265" selection-start-column="23" selection-end-line="12265" selection-end-column="23" />
+          <file leaf-file-name="main_viewer.h" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="609">
+                  <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="21" />
+                  <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="PointCloudViewer.cpp" pinned="false" current-in-tab="true">
+          <file leaf-file-name="PointCloudViewer.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="227">
-                  <caret line="307" column="11" lean-forward="false" selection-start-line="307" selection-start-column="11" selection-end-line="307" selection-end-column="11" />
-                  <folding>
-                    <element signature="e#7135#7196#0" expanded="false" />
-                    <element signature="e#7199#7273#0" expanded="false" />
-                    <element signature="e#7276#7763#0" expanded="false" />
-                    <element signature="e#7765#10635#0" expanded="false" />
-                    <element signature="e#12767#12906#0" expanded="false" />
-                    <element signature="e#12908#13400#0" expanded="false" />
-                  </folding>
+                <state relative-caret-position="269">
+                  <caret line="219" column="0" lean-forward="false" selection-start-line="219" selection-start-column="0" selection-end-line="219" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ROSOutput3DWrapper.cpp" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/IOWrapper/ROS/ROSOutput3DWrapper.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="2502">
+                  <caret line="139" column="4" lean-forward="false" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="4" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ROSOutput3DWrapper.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/IOWrapper/ROS/ROSOutput3DWrapper.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="540">
+                  <caret line="30" column="9" lean-forward="false" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="9" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -144,6 +164,16 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/CMakeLists.txt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="36">
+                  <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="KeyFrameDisplay.h" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.h">
               <provider selected="true" editor-type-id="text-editor">
@@ -174,14 +204,12 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="PointCloudViewer.h" pinned="false" current-in-tab="true">
+          <file leaf-file-name="PointCloudViewer.h" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="110">
-                  <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#3434#5861#1" expanded="false" />
-                  </folding>
+                <state relative-caret-position="5586">
+                  <caret line="394" column="0" lean-forward="false" selection-start-line="394" selection-start-column="0" selection-end-line="394" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -189,8 +217,28 @@
           <file leaf-file-name="SlamSystem.cpp" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/SlamSystem.cpp">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="15678">
-                  <caret line="871" column="0" lean-forward="false" selection-start-line="871" selection-start-column="0" selection-end-line="871" selection-end-column="0" />
+                <state relative-caret-position="2304">
+                  <caret line="128" column="1" lean-forward="false" selection-start-line="128" selection-start-column="1" selection-end-line="128" selection-end-column="1" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SlamSystem.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/SlamSystem.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="2106">
+                  <caret line="117" column="19" lean-forward="false" selection-start-line="117" selection-start-column="19" selection-end-line="117" selection-end-column="19" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Timestamp.h" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/IOWrapper/Timestamp.h">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -211,10 +259,14 @@
       <find>MatrixMode</find>
       <find>map</find>
       <find>std::unordered_map</find>
+      <find>cost</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -223,15 +275,17 @@
         <option value="$PROJECT_DIR$/lsd_slam_core/src/IOWrapper/ROS/ROSOutput3DWrapper.cpp" />
         <option value="$PROJECT_DIR$/lsd_slam_core/src/LiveSLAMWrapper.cpp" />
         <option value="$PROJECT_DIR$/lsd_slam_core/src/SlamSystem.cpp" />
-        <option value="$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.cpp" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameGraphDisplay.cpp" />
         <option value="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameGraphDisplay.h" />
         <option value="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.cpp" />
         <option value="$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.h" />
         <option value="$PROJECT_DIR$/lsd_slam_core/src/GlobalMapping/KeyFrameGraph.h" />
-        <option value="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.h" />
         <option value="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp" />
+        <option value="$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.h" />
+        <option value="$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.cpp" />
+        <option value="$PROJECT_DIR$/lsd_slam_viewer/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.h" />
       </list>
     </option>
   </component>
@@ -290,20 +344,13 @@
             <path>
               <item name="lsd_slam" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="lsd-slam" type="462c0819:PsiDirectoryNode" />
-              <item name="lsd_slam_core" type="462c0819:PsiDirectoryNode" />
+              <item name="lsd_slam_viewer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lsd_slam" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="lsd-slam" type="462c0819:PsiDirectoryNode" />
-              <item name="lsd_slam_core" type="462c0819:PsiDirectoryNode" />
+              <item name="lsd_slam_viewer" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lsd_slam" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
-              <item name="lsd-slam" type="462c0819:PsiDirectoryNode" />
-              <item name="lsd_slam_core" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="GlobalMapping" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -401,7 +448,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113016000" />
+    <option name="totallyTimeSpent" value="114911000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -413,29 +460,38 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1857" height="1212" extended-state="6" />
-    <editor active="true" />
+    <frame x="65" y="-4" width="1855" height="1204" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.03150912" sideWeight="0.4967442" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15588723" sideWeight="0.4967442" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293023" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293023" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31238616" sideWeight="0.5018868" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293023" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31238616" sideWeight="0.49811321" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32857144" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14925373" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18790698" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.08512991" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15809524" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12603648" sideWeight="0.5032558" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293023" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36744186" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293023" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31238616" sideWeight="0.5018868" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293023" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18790698" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.03150912" sideWeight="0.4967442" order="0" side_tool="false" content_ui="combo" />
       <window_info id="LuaJ" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946378" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293023" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31238616" sideWeight="0.49811321" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14925373" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12603648" sideWeight="0.5032558" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -616,13 +672,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.qglviewer.xml" />
-    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-36">
-          <caret line="22" column="25" lean-forward="true" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lsd_slam_core/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -632,8 +681,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/IOWrapper/ROS/ROSOutput3DWrapper.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="80" column="8" lean-forward="false" selection-start-line="80" selection-start-column="8" selection-end-line="80" selection-end-column="8" />
+        <state relative-caret-position="540">
+          <caret line="30" column="9" lean-forward="false" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -646,8 +696,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/IOWrapper/ROS/ROSOutput3DWrapper.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="109" column="35" lean-forward="false" selection-start-line="109" selection-start-column="35" selection-end-line="109" selection-end-column="35" />
+        <state relative-caret-position="2502">
+          <caret line="139" column="4" lean-forward="false" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -689,8 +740,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/DataStructures/Frame.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3582">
-          <caret line="199" column="29" lean-forward="false" selection-start-line="199" selection-start-column="29" selection-end-line="199" selection-end-column="29" />
+        <state relative-caret-position="720">
+          <caret line="40" column="6" lean-forward="false" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -703,8 +755,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/SlamSystem.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3924">
-          <caret line="218" column="4" lean-forward="false" selection-start-line="218" selection-start-column="4" selection-end-line="218" selection-end-column="4" />
+        <state relative-caret-position="2106">
+          <caret line="117" column="19" lean-forward="false" selection-start-line="117" selection-start-column="19" selection-end-line="117" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -739,25 +792,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="39" column="31" lean-forward="false" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="e#813#837#0" expanded="true" />
-            <element signature="e#4060#4103#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameGraphDisplay.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
@@ -768,8 +802,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lsd_slam_core/src/SlamSystem.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15678">
-          <caret line="871" column="0" lean-forward="false" selection-start-line="871" selection-start-column="0" selection-end-line="871" selection-end-column="0" />
+        <state relative-caret-position="2304">
+          <caret line="128" column="1" lean-forward="false" selection-start-line="128" selection-start-column="1" selection-end-line="128" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -805,36 +839,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.cpp">
+    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2016">
-          <caret line="112" column="22" lean-forward="false" selection-start-line="112" selection-start-column="22" selection-end-line="112" selection-end-column="22" />
+        <state relative-caret-position="5586">
+          <caret line="394" column="0" lean-forward="false" selection-start-line="394" selection-start-column="0" selection-end-line="394" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.h">
+    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/KeyFrameDisplay.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding>
-            <element signature="e#3434#5861#1" expanded="false" />
-          </folding>
+        <state relative-caret-position="261">
+          <caret line="218" column="30" lean-forward="false" selection-start-line="218" selection-start-column="30" selection-end-line="218" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/PointCloudViewer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="307" column="11" lean-forward="false" selection-start-line="307" selection-start-column="11" selection-end-line="307" selection-end-column="11" />
-          <folding>
-            <element signature="e#7135#7196#0" expanded="false" />
-            <element signature="e#7199#7273#0" expanded="false" />
-            <element signature="e#7276#7763#0" expanded="false" />
-            <element signature="e#7765#10635#0" expanded="false" />
-            <element signature="e#12767#12906#0" expanded="false" />
-            <element signature="e#12908#13400#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="269">
+          <caret line="219" column="0" lean-forward="false" selection-start-line="219" selection-start-column="0" selection-end-line="219" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="159" column="34" lean-forward="true" selection-start-line="159" selection-start-column="34" selection-end-line="159" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lsd_slam_viewer/src/main_viewer.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="609">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>

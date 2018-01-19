@@ -22,6 +22,7 @@
 
 PointCloudViewer* viewer = 0;
 
+RobotViewer*      robot  = 0;
 
 void dynConfCb(lsd_slam_viewer::LSDSLAMViewerParamsConfig &config, uint32_t level)
 {
@@ -129,6 +130,16 @@ void rosFileLoop( int argc, char** argv )
 	exit(1);
 }
 
+void hello(){
+    while(true) {
+        struct  timeval  time_start;
+        gettimeofday(&time_start,NULL);
+        double cost_time  = (time_start.tv_sec)+(time_start.tv_usec)/1000000.0;
+        cout <<"Thread time " <<  cost_time << endl;
+    }
+
+}
+
 
 int main( int argc, char** argv )
 {
@@ -137,33 +148,19 @@ int main( int argc, char** argv )
 	printf("Started QApplication thread\n");
 	// Read command lines arguments.
 	QApplication application(argc,argv);//QApplication 类管理图形用户界面应用程序的控制流和主要设置
-   
-    RobotViewer robot;
 
-    robot.setWindowTitle("RobotMap");
-
-    robot.show();
-
-  
-  
+	robot =  new RobotViewer;
+	robot->setWindowTitle("RobotMap");
+	robot->show();
 
 	// Instantiate the viewer.
 	viewer = new PointCloudViewer();
-
-
-
-	#if QT_VERSION < 0x040000
-		// Set the viewer as the application main widget.
-		application.setMainWidget(viewer);
-	#else
-		viewer->setWindowTitle("VSLAM PointCloud");
-	#endif
-
-
-	// Make the viewer window visible on screen.
+	viewer->setWindowTitle("VSLAM PointCloud");
+// Make the viewer window visible on screen.
 	viewer->show();//show the "VSLAM Robot PointCloud Viewer" window
 
 	boost::thread rosThread;
+    boost::thread t(hello);
 
 	if(argc > 1)
 	{
@@ -181,6 +178,7 @@ int main( int argc, char** argv )
 	printf("Shutting down... \n");
 	ros::shutdown();
 	rosThread.join();
+	t.join();
 	printf("Done. \n");
 
 }

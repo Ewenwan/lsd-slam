@@ -35,6 +35,7 @@
 #include "rosbag/bag.h"
 #include "rosbag/query.h"
 #include "rosbag/view.h"
+#include <sys/time.h>
 
 
 extern PointCloudViewer* viewer;
