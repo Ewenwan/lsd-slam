@@ -51,6 +51,9 @@ set(SOURCE_FILES
   src/KeyFrameDisplay.cpp
   src/KeyFrameGraphDisplay.cpp
   src/settings.cpp
+        src/keyboard/keyboard.cc
+        src/robot/robot.cc
+        src/serial/serial.cc
 )
 
 set(HEADER_FILES     
@@ -58,6 +61,9 @@ set(HEADER_FILES
   src/KeyFrameDisplay.h
   src/KeyFrameGraphDisplay.h
   src/settings.h
+        src/keyboard/keyboard.h
+        src/robot/robot.h
+        src/serial/serial.h
 )
 
 include_directories(

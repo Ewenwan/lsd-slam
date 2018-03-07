@@ -19,9 +19,16 @@
 */
 #include "main_viewer.h"
 #include "../cfg/cpp/lsd_slam_viewer/LSDSLAMViewerParamsConfig.h"
+#include "../../../../../../../usr/include/c++/4.8/iomanip"
+#include "../../../../../../../usr/include/c++/4.8/cstdio"
+#include "sophus/sim3.hpp"
+#include "../../../../../../../usr/include/c++/4.8/cmath"
+#include "robot/robot.h"
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 
 PointCloudViewer* viewer = 0;
-
+three_omni_wheel_robot* robotChasis=0;
 RobotViewer*      robot  = 0;
 
 void dynConfCb(lsd_slam_viewer::LSDSLAMViewerParamsConfig &config, uint32_t level)
@@ -55,6 +62,54 @@ void frameCb(lsd_slam_viewer::keyframeMsgConstPtr msg)
 
 	if(viewer != 0)
 		viewer->addFrameMsg(msg);
+
+    //cout << setprecision(8) << "Now This Robot in\n\n"<< viewer->robot_pose << "\n\n";
+
+
+    Sophus::Vector2f robot_direction ;
+
+    robot_direction << viewer->robot_direction_global[0] - viewer->robot_pose[0],
+                    viewer->robot_direction_global[2] - viewer->robot_pose[2];
+
+    double sintheta = robot_direction[0]/sqrt(robot_direction[0]*robot_direction[0]
+                                        +  robot_direction[1]*robot_direction[1]);
+
+    double theta =  asin(sintheta);
+
+    cout << setprecision(8) << "theta =" << theta << "\n" ;
+
+
+    double kp1 = 1000;
+    double vset = 1.414*kp1*fabs(viewer->robot_pose[0]);
+    double vx = 0;
+    double vz = 0;
+
+    if(viewer->robot_pose[0] < 0)    {
+
+        vx = sin(0.785-theta)*vset;
+        vz = cos(0.785-theta)*vset;
+
+    } else {
+
+        vx = -sin(0.785+theta)*vset;
+        vz = cos(0.785+theta)*vset;
+    }
+
+    double kp2 = 100;
+
+    double omega = -kp2*theta;
+
+
+    cout << setprecision(8) << "vx =" << vx << "\n" ;
+    cout << setprecision(8) << "vz =" << vz << "\n" ;
+    cout << setprecision(8) << "omega =" << omega << "\n" ;
+
+    
+    robotChasis->robot_velocity << vx,vz+100,0;
+    robotChasis->wheel_velocity_decode();
+    robotChasis->robot_move();
+
+
 }
 void graphCb(lsd_slam_viewer::keyframeGraphMsgConstPtr msg)
 {
@@ -135,7 +190,7 @@ void hello(){
         struct  timeval  time_start;
         gettimeofday(&time_start,NULL);
         double cost_time  = (time_start.tv_sec)+(time_start.tv_usec)/1000000.0;
-        cout <<"Thread time " <<  cost_time << endl;
+        //cout <<"Thread time " <<  cost_time << endl;
     }
 
 }
@@ -158,6 +213,9 @@ int main( int argc, char** argv )
 	viewer->setWindowTitle("VSLAM PointCloud");
 // Make the viewer window visible on screen.
 	viewer->show();//show the "VSLAM Robot PointCloud Viewer" window
+
+    Eigen::Vector3d  set_velocity(0,0,0);
+    robotChasis = new three_omni_wheel_robot(set_velocity,"UART");
 
 	boost::thread rosThread;
     boost::thread t(hello);

@@ -407,33 +407,34 @@ void KeyFrameDisplay::drawPC(float pointSize, float alpha) {
         glLightfv(GL_LIGHT0, GL_AMBIENT, LightColor);
     } else//进入这个分支
     {
-        //以下是真正的将之前的点云信息显示在屏幕上
-        glDisable(GL_LIGHTING);
-        glPushMatrix();
-
-        Sophus::Matrix4f m = camToWorld.matrix();
-        glMultMatrixf((GLfloat *) m.data());
-        //
-        glPointSize(pointSize);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-
-        glVertexPointer(3, GL_FLOAT, sizeof(MyVertex), 0);
-        glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(MyVertex), (const void *) (3 * sizeof(float)));
-
-        //使能点列阵
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
-
-        //绘制图元，GL_POINTS点，vertexBufferNumPoints点的个数
-        glDrawArrays(GL_POINTS, 0, vertexBufferNumPoints);
-
-
-        //失能点列阵
-        glDisableClientState(GL_COLOR_ARRAY);
-        glDisableClientState(GL_VERTEX_ARRAY);
-
-        glPopMatrix();
+        //2018.3.5 for track exp ,undisplay pc
+//        //以下是真正的将之前的点云信息显示在屏幕上
+//        glDisable(GL_LIGHTING);
+//        glPushMatrix();
+//
+//        Sophus::Matrix4f m = camToWorld.matrix();
+//        glMultMatrixf((GLfloat *) m.data());
+//        //
+//        glPointSize(pointSize);
+//
+//        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+//
+//        glVertexPointer(3, GL_FLOAT, sizeof(MyVertex), 0);
+//        glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(MyVertex), (const void *) (3 * sizeof(float)));
+//
+//        //使能点列阵
+//        glEnableClientState(GL_VERTEX_ARRAY);
+//        glEnableClientState(GL_COLOR_ARRAY);
+//
+//        //绘制图元，GL_POINTS点，vertexBufferNumPoints点的个数
+//        glDrawArrays(GL_POINTS, 0, vertexBufferNumPoints);
+//
+//
+//        //失能点列阵
+//        glDisableClientState(GL_COLOR_ARRAY);
+//        glDisableClientState(GL_VERTEX_ARRAY);
+//
+//        glPopMatrix();
 
 
         if (alpha < 1) {

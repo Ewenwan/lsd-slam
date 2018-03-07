@@ -47,6 +47,7 @@ class PointCloudViewer;
 #include "settings.h"
 #include "../msg_gen/cpp/include/lsd_slam_viewer/keyframeGraphMsg.h"
 #include "../msg_gen/cpp/include/lsd_slam_viewer/keyframeMsg.h"
+#include "../../../../../../../usr/include/c++/4.8/iostream"
 
 #define gridUnit 0.02
 using namespace std;
@@ -289,6 +290,13 @@ public:
 
 	MAP* robot_map;
 
+    Sophus::Vector4f robot_pose;
+    Sophus::Vector4f robot_origin;
+    Sophus::Vector4f robot_direction_global;
+    Sophus::Vector4f robot_direction;
+
+    Sophus::Matrix4f POSE;
+
 protected :
 	virtual void draw();
 	virtual void init();
@@ -306,9 +314,7 @@ private:
 //    int key_frame_size;
 //    int last_key_frame_size;
 
-	Sophus::Vector4f robot_pose;
-	Sophus::Vector4f robot_origin;
-	Sophus::Matrix4f POSE;
+
 
 	// displays kf-graph
 	KeyFrameGraphDisplay* graphDisplay;

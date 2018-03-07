@@ -52,6 +52,7 @@
 #include "../../../../../../../usr/include/x86_64-linux-gnu/sys/time.h"
 #include "../../../../../../../usr/include/x86_64-linux-gnu/bits/time.h"
 
+
 #include <sys/time.h>
 
 
@@ -198,6 +199,7 @@ void PointCloudViewer::init()
 {
 	robot_pose << 0,0,0,1;
 	robot_origin << 0,0,0,1;
+    robot_direction << 0,0,1,1;
 
 	restoreStateFromFile();
 	cout.setf(ios::fixed);
@@ -216,9 +218,8 @@ void PointCloudViewer::draw()
 
 	gettimeofday(&time_PointCloudViewer,NULL);
 	double cost_time  = (time_PointCloudViewer.tv_sec)+(time_PointCloudViewer.tv_usec)/1000000.0;
-	cout <<"cost time " <<  cost_time << endl;
 
-
+    //cout <<"cost time " <<  cost_time << endl;
 
 	if(resetRequested)
 	{
@@ -293,9 +294,11 @@ void PointCloudViewer::draw()
 		{
 			printf("This PC frame is %d\n",currentCamDisplay->id);
 			POSE = currentCamDisplay->camToWorld.matrix();
+            //POSE = currentCamDisplay->camToWorld.inverse();
 			robot_pose = POSE*robot_origin;
+            robot_direction_global =   POSE*robot_direction;
 
-			cout << setprecision(8) << "Now This Robot in\n\n"<< robot_pose << "\n\n";
+			//cout << setprecision(8) << "Now This Robot in\n\n"<< robot_pose << "\n\n";
 			//robot_map->PrintMap();
 		}
 
@@ -535,6 +538,7 @@ void RobotViewer::draw()
 		cout << "robot_pose.size() = \n\n"<< robot_pose.size() << "\n\n";
 
 
+	//display track
 		glColor3f(1,0,0);
 		glPointSize(4.0);
 		//glLineWidth(4);
@@ -542,7 +546,7 @@ void RobotViewer::draw()
 		for(unsigned int i = 0 ; i < robot_pose.size() ; i++ )
 		{
 			//Sophus::Vector4f rp = *robot_pose[i];
-			glVertex3f(robot_pose[i][0],robot_pose[i][1],robot_pose[i][2]);
+			glVertex3f(robot_pose[i][0],robot_pose[i][1]-1,robot_pose[i][2]);
 		}
 		glVertex3f(Robot_pose[0],Robot_pose[1],Robot_pose[2]);
 		glEnd();
