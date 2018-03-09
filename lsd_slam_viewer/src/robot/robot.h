@@ -100,16 +100,17 @@ protected:
 
 };
 
+#define vratio  1.1 
 class three_omni_wheel_robot : public wheel_robot<Eigen::Vector3d>
 {
     
 /* 
  *                                                    Y
     velocity   --   V_1   --             V1     V2    /|\  
-               |           |               -   -       |
-               |    V_2    |                - -        |        
-               |           |                 |         |_________\ X
-               --   V_3   --                 V3       o          / 
+               |           |               -   -       |              /__
+               |    V_2    |                - -        |              \  \
+               |           |                 |         |_________\ X      \
+               --   V_3   --                 V3       o          /        +w
 
 */
 
@@ -118,7 +119,7 @@ public:
     explicit three_omni_wheel_robot( Eigen::Vector3d velocity ,const string chassis_model) 
     : wheel_robot(velocity,chassis_model)
     {
-       solve_convert <<   -0.5d , -0.866d , SLAM_CAR_RADIUS ,
+       solve_convert <<   -0.5d*vratio , -0.866d*vratio , SLAM_CAR_RADIUS*vratio ,
                           -0.5d ,  0.866d , SLAM_CAR_RADIUS ,
                            1.0d ,  0.0d   , SLAM_CAR_RADIUS ;
     };

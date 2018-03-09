@@ -21,6 +21,7 @@
 #include "boost/thread.hpp"
 #include "settings.h"
 #include "PointCloudViewer.h"
+#include "KeyFrameDisplay.h"
 
 #include <dynamic_reconfigure/server.h>
 #include "lsd_slam_viewer/LSDSLAMViewerParamsConfig.h"

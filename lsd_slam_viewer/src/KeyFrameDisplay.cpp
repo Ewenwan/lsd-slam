@@ -230,6 +230,11 @@ void KeyFrameDisplay::refreshPC()
             if(viewer->robot_map->vertex_map.find(tempgv) == viewer->robot_map->vertex_map.end())
             {
                 viewer->robot_map->vertex_map.insert(tempgv);//add
+                if(tempgv.x < 0)
+                    tempgv.x -= gridUnit;
+
+                if(tempgv.z < 0)
+                    tempgv.z -= gridUnit;
                 viewer->robot_map->gridInsertNode((int)(tempgv.x/gridUnit),(int)(tempgv.z/gridUnit));
             }
 

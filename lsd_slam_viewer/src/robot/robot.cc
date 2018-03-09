@@ -191,6 +191,17 @@ int three_omni_wheel_robot::robot_move()
         dwv(i) = dwv(i) + 32767;
         instruction_message[i*2+1] = (dwv(i) & 0x0000ff00) >> 8;
         instruction_message[i*2+2] = (dwv(i) & 0x000000ff);
+        
+        if(instruction_message[i*2+1] == 0x53)
+            instruction_message[i*2+1] = 0x54;                                                                                             
+        if(instruction_message[i*2+1] == 0x45)
+            instruction_message[i*2+1] = 0x46;
+      
+        if(instruction_message[i*2+2] == 0x53)
+            instruction_message[i*2+2] = 0x54;
+        if(instruction_message[i*2+2] == 0x45)
+            instruction_message[i*2+2] = 0x46;
+
     }
      if(write(serial_fd,instruction_message,sizeof(instruction_message))<0)
     {

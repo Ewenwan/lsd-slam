@@ -30,6 +30,7 @@
 PointCloudViewer* viewer = 0;
 three_omni_wheel_robot* robotChasis=0;
 RobotViewer*      robot  = 0;
+float kp_omega;
 
 void dynConfCb(lsd_slam_viewer::LSDSLAMViewerParamsConfig &config, uint32_t level)
 {
@@ -55,6 +56,15 @@ void dynConfCb(lsd_slam_viewer::LSDSLAMViewerParamsConfig &config, uint32_t leve
 
 }
 
+#define STOP_STATE  0
+#define RIGHT_STATE 1
+#define LEFT_STATE  2
+
+float end_point_z = 0.1;
+float end_point_x = 0;
+char  state       = RIGHT_STATE;
+float v_set = 125, theta_set = 0 ; 
+
 void frameCb(lsd_slam_viewer::keyframeMsgConstPtr msg)
 {
 
@@ -63,51 +73,112 @@ void frameCb(lsd_slam_viewer::keyframeMsgConstPtr msg)
 	if(viewer != 0)
 		viewer->addFrameMsg(msg);
 
-    //cout << setprecision(8) << "Now This Robot in\n\n"<< viewer->robot_pose << "\n\n";
+    Sophus::Vector4f originCar ;
+    Sophus::Vector4f zCar ;
+    Sophus::Vector4f xCar ;
+
+    originCar << 0,0,0,1;//use this to set grid point coordinate
+    zCar << 0,0,1,1;
+    xCar << 1,0,0,1;
+
+    Sophus::Matrix4f POSE = viewer->currentCamDisplay->camToWorld.matrix();//.inverse();//maybe data crash
+
+    originCar   = POSE*originCar;
+    zCar        = POSE*zCar - originCar;
+    xCar        = POSE*xCar - originCar;
+
+    Sophus::Vector4f end_point ;
+
+    if(originCar[0] > end_point_x  -0.1 )
+        state = LEFT_STATE;
+    if(originCar[0] < -end_point_x +0.1 )
+        state = RIGHT_STATE;
+
+    if(state == LEFT_STATE)
+        end_point << -end_point_x,0,end_point_z,0;
+    else if (state == RIGHT_STATE)
+        end_point << end_point_x,0,end_point_z,0;
+
+    originCar[1] = originCar[3] = 0;
+    zCar[1]      = zCar[3] = 0;
+    xCar[1]      = xCar[3] = 0;
+
+    cout <<"originCar\n" << originCar <<endl;
+    cout <<"zCar\n" << zCar <<endl;
+    cout <<"xCar\n" << xCar <<endl;
+
+    Sophus::Vector4f  velocityerr_direction_car =  end_point - originCar;
+
+    cout <<"velocityerr_direction_car\n" << velocityerr_direction_car <<endl;
 
 
-    Sophus::Vector2f robot_direction ;
+    float vlat  = xCar.dot(velocityerr_direction_car)/xCar.norm();
+    float vlong = zCar.dot(velocityerr_direction_car)/zCar.norm();
 
-    robot_direction << viewer->robot_direction_global[0] - viewer->robot_pose[0],
-                    viewer->robot_direction_global[2] - viewer->robot_pose[2];
+    cout <<"vlat\n"  << vlat  <<endl;
+    cout <<"vlong\n" << vlong <<endl;
 
-    double sintheta = robot_direction[0]/sqrt(robot_direction[0]*robot_direction[0]
-                                        +  robot_direction[1]*robot_direction[1]);
+    //omega_error
+    /*
+    * theta  is Zcar  turn to Zglobal,Anti-clock is +
+    * omega is Anti-clock is +
+    *   zglobal
+    *   /|\ __ zcar
+    *    |   /|
+    *    |  /
+    *    | /
+    *    |/ theta > 0
+    * */
+    float theta =  asin(zCar[0]/zCar.norm());
 
-    double theta =  asin(sintheta);
-
-    cout << setprecision(8) << "theta =" << theta << "\n" ;
-
-
-    double kp1 = 1000;
-    double vset = 1.414*kp1*fabs(viewer->robot_pose[0]);
-    double vx = 0;
-    double vz = 0;
-
-    if(viewer->robot_pose[0] < 0)    {
-
-        vx = sin(0.785-theta)*vset;
-        vz = cos(0.785-theta)*vset;
-
-    } else {
-
-        vx = -sin(0.785+theta)*vset;
-        vz = cos(0.785+theta)*vset;
+    if(zCar[0] >= 0 && zCar[2] < 0)
+    {
+        theta = (float)3.14159 - theta;
+    }
+    else if(zCar[0] < 0 && zCar[2] < 0)
+    {
+        theta = -(float)3.14159 - theta;
     }
 
-    double kp2 = 100;
+//    cout << setprecision(8) << "velocityset_direction_car = \n" << velocityset_direction_car << "\n" ;
+//    cout << setprecision(8) << "velocityerr_direction_car = \n" << velocityerr_direction_car << "\n" ;
+    cout << setprecision(8) << "theta =" << theta << "\n" ;
 
-    double omega = -kp2*theta;
+    float omega = -kp_omega*(theta_set-theta);
 
 
-    cout << setprecision(8) << "vx =" << vx << "\n" ;
-    cout << setprecision(8) << "vz =" << vz << "\n" ;
-    cout << setprecision(8) << "omega =" << omega << "\n" ;
 
-    
-    robotChasis->robot_velocity << vx,vz+100,0;
+    if( vlat > 200 )
+        vlat =  200;
+    else if(vlat < -200 )
+        vlat = -200;
+
+    if( vlong > 200 )
+        vlong =  200;
+    else if(vlong < -200 )
+        vlong = -200;
+
+    if( omega  > 200 )
+        omega  =  200;
+    else if(omega < -200 )
+        omega = -200;
+    cout << setprecision(8) << "lat = \n" << vlat  << "\n" ;
+    cout << setprecision(8) << "long = \n" << vlong << "\n" ;
+    cout << setprecision(8) << "omega = \n" << omega << "\n" ;
+
+    Sophus::Vector3d  velocity_give;
+
+    velocity_give << (double)vlat ,(double)vlong ,0;
+
+    velocity_give = v_set*velocity_give/velocity_give.norm();
+    velocity_give[2] = omega;
+
+    cout <<"velocity_give   \n" << velocity_give   <<endl;
+
+    robotChasis->robot_velocity = velocity_give;
     robotChasis->wheel_velocity_decode();
     robotChasis->robot_move();
+
 
 
 }
@@ -131,13 +202,24 @@ void rosThreadLoop( int argc, char** argv )
 	dynamic_reconfigure::Server<lsd_slam_viewer::LSDSLAMViewerParamsConfig> srv;
 	srv.setCallback(dynConfCb);
 
-
 	ros::NodeHandle nh;
+  
+  ros::NodeHandle prnode("~");
+  prnode.param<float>("kp_omega",kp_omega,200);
+  prnode.param<float>("end_point_z",end_point_z,0.0);
+  prnode.param<float>("end_point_x",end_point_x,0.0);
+  prnode.param<float>("v_set",v_set,125);
+  prnode.param<float>("theta_set",theta_set,0.0);
+
+  cout<<"omega="<<kp_omega<<endl;
+  cout<<"end_point_z="<<end_point_z<<endl;
+	cout<<"end_point_x="<<end_point_x<<endl;
 
 	ros::Subscriber liveFrames_sub = nh.subscribe(nh.resolveName("lsd_slam/liveframes"),1, frameCb);
 	ros::Subscriber keyFrames_sub = nh.subscribe(nh.resolveName("lsd_slam/keyframes"),20, frameCb);
 	ros::Subscriber graph_sub       = nh.subscribe(nh.resolveName("lsd_slam/graph"),10, graphCb);
 
+  
 	ros::spin();
 
 	ros::shutdown();

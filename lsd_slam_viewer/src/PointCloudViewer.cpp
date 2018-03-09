@@ -294,7 +294,7 @@ void PointCloudViewer::draw()
 		{
 			printf("This PC frame is %d\n",currentCamDisplay->id);
 			POSE = currentCamDisplay->camToWorld.matrix();
-            //POSE = currentCamDisplay->camToWorld.inverse();
+
 			robot_pose = POSE*robot_origin;
             robot_direction_global =   POSE*robot_direction;
 
@@ -536,26 +536,26 @@ void RobotViewer::draw()
 
 		//cout << "This Robot in\n\n"<< robot_pose << "\n\n";
 		cout << "robot_pose.size() = \n\n"<< robot_pose.size() << "\n\n";
-
+  }
 
 	//display track
-		glColor3f(1,0,0);
+		glColor3ub(0,238,118);
 		glPointSize(4.0);
 		//glLineWidth(4);
 		glBegin(GL_POINTS);//GL_POINTS  GL_LINES
 		for(unsigned int i = 0 ; i < robot_pose.size() ; i++ )
 		{
 			//Sophus::Vector4f rp = *robot_pose[i];
-			glVertex3f(robot_pose[i][0],robot_pose[i][1]-1,robot_pose[i][2]);
+			glVertex3f(robot_pose[i][0],robot_pose[i][1]-0.1,robot_pose[i][2]);
 		}
 		glVertex3f(Robot_pose[0],Robot_pose[1],Robot_pose[2]);
 		glEnd();
 		last_frame_id = viewer->currentCamDisplay->id;
-	}
+	
 
 	//glColor3ub(30, 144, 255);//green
 	//display map
-	map<node, int>::iterator itr;
+	/*map<node, int>::iterator itr;
 	itr = viewer->robot_map->g_map.begin();
 
 	while(itr != viewer->robot_map->g_map.end())
@@ -571,19 +571,35 @@ void RobotViewer::draw()
 		glutSolidCube(gridUnit);
 		glPopMatrix();
 		itr++;
-	}
+	}*/
 
 
 	//display camera
 	//gridUnit
 	glPushMatrix();
-	glMultMatrixf((GLfloat*)POSE.data());
-	glTranslatef(0.1, -0.3, 0.2);
-	//glRotatef((GLfloat) 0, 0.0, 0.0, 0.0);
-	glColor3f(0.8,0.4,0.5);
-	glScalef (1, 1, 2);
-	glutSolidCube(0.2);
-	glPopMatrix();
+	  glMultMatrixf((GLfloat*)POSE.data());
+		glColor3f(1,0,0);
+		glLineWidth(4);
+	  glBegin(GL_LINES);//GL_POINTS  GL_LINES
+		    glVertex3f(0,-0.1,0);
+		    glVertex3f(0,-0.1,0.2);
+		glEnd();
+
+		glColor3f(0,0,1);
+		glLineWidth(4);
+	  glBegin(GL_LINES);//GL_POINTS  GL_LINES
+		    glVertex3f(0,-0.1,0);
+		    glVertex3f(0.2,-0.1,0);
+      glEnd();
+
+  glPopMatrix();
+
+	glColor3f(0,1,0);
+	glLineWidth(8);
+	glBegin(GL_LINES);//GL_POINTS  GL_LINES
+		glVertex3f(Robot_pose[0],Robot_pose[1]-0.1,Robot_pose[2]);
+		glVertex3f(0,0.1,2);
+	glEnd();
 
 
 }

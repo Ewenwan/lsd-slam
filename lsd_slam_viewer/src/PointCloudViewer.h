@@ -296,6 +296,8 @@ public:
     Sophus::Vector4f robot_direction;
 
     Sophus::Matrix4f POSE;
+    // displays only current keyframe (which is not yet in the graph).
+    KeyFrameDisplay* currentCamDisplay;
 
 protected :
 	virtual void draw();
@@ -305,6 +307,7 @@ protected :
 	virtual QString helpString() const;
 
 //	virtual void drawText(int x, int y, const QString & text, const QFont & fnt) {printf(text.toStdString().c_str());};
+
 
 
 private:
@@ -319,8 +322,7 @@ private:
 	// displays kf-graph
 	KeyFrameGraphDisplay* graphDisplay;
 
-	// displays only current keyframe (which is not yet in the graph).
-	KeyFrameDisplay* currentCamDisplay;
+
 
 
 

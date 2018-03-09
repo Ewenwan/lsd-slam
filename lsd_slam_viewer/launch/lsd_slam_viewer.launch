@@ -1,0 +1,4 @@
+<launch>
+  <node name="viewer" pkg="lsd_slam_viewer" type="viewer" output="screen" >
+  </node>
+</launch>
